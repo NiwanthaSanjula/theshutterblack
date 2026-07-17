@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+}
+
+enum AlbumStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum InquiryStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admin_users")
+}
+
+model Album {
+  id           String      @id @default(cuid())
+  title        String
+  slug         String      @unique
+  description  String?     @db.Text
+  category     String?
+  location     String?
+  eventDate    DateTime?
+  status       AlbumStatus @default(DRAFT)
+  isFeatured   Boolean     @default(false)
+  displayOrder Int         @default(0)
+  publishedAt  DateTime?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  photos Photo[]
+
+  @@index([status])
+  @@index([isFeatured])
+  @@index([displayOrder])
+  @@map("albums")
+}
+
+model Photo {
+  id           String   @id @default(cuid())
+  publicid     String   @unique
+  secureUrl    String
+  caption      String?  @db.Text
+  altText      String?
+  width        Int?
+  height       Int?
+  format       String?
+  fileSize     Int?
+  displayOrder Int      @default(0)
+  isVisible    Boolean  @default(true)
+  isCover      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  albumId String?
+  album   Album?  @relation(fields: [albumId], references: [id], onDelete: Cascade)
+
+  @@index([albumId])
+  @@index([albumId, displayOrder])
+  @@map("photos")
+}
+
+model Inquiry {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  eventType String?
+  eventDate DateTime?
+  location  String?
+  message   String        @db.Text
+  status    InquiryStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("inquiries")
+}
+
+model SiteSetting {
+  id                String   @id @default("main")
+  businessName      String   @default("The Shutter Black")
+  photographerName  String?
+  biography         String?  @db.Text
+  email             String?
+  phone             String?
+  whatsapp          String?
+  address           String?  @db.Text
+  instagramUrl      String?
+  facebookUrl       String?
+  logoUrl           String?
+  logoPublicId      String?
+  heroImageUrl      String?
+  heroImagePublicId String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("site_settings")
+}

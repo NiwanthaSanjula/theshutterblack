@@ -31,6 +31,11 @@ export type AlbumFormState = {
     values?: AlbumFormValues
 };
 
+export type DeleteAlbumResult = {
+    success: boolean;
+    message?: string;
+}
+
 
 // --- Create a base slug ---
 function createSlug(value: string): string {
@@ -174,7 +179,6 @@ export async function createAlbum(
     redirect("/admin/albums");
 }
 
-
 // --- Update Album ---
 export async function updateAlbum(
     albumId: string,
@@ -269,6 +273,63 @@ export async function updateAlbum(
     revalidatePath("/albums");
 
     redirect("/admin/albums");
+}
+
+// --- Delete Album ---
+export async function deleteAlbum(
+    albumId: string,
+): Promise<DeleteAlbumResult> {
+    if (!albumId) {
+        return {
+            success: false,
+            message: "A valid album ID is required"
+        };
+    }
+
+    const existingAlbum = await prisma.album.findUnique({
+        where: {
+            id: albumId
+        },
+
+        select: {
+            id: true,
+            title: true,
+            slug: true
+        },
+    });
+
+    if (!existingAlbum) {
+        return {
+            success: false,
+            message: "This album could not be found."
+        };
+    }
+
+    try {
+
+        await prisma.album.delete({
+            where: {
+                id: existingAlbum.id
+            },
+        });
+    } catch (error) {
+        console.error("Failed to delete album: ", error);
+
+        return {
+            success: false,
+            message: "The album could not be deleted. Please try again."
+        }
+    }
+
+    revalidatePath("/admin");
+    revalidatePath("/admin/albums");
+    revalidatePath("/");
+    revalidatePath("/albums");
+    revalidatePath(`/albums/${existingAlbum.slug}`)
+
+    return {
+        success: true,
+    };
 }
 
 

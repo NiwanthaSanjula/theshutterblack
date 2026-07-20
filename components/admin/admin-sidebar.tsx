@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const adminNavigation = [
     {
@@ -21,6 +24,9 @@ const adminNavigation = [
 
 
 const AdminSidebar = () => {
+
+    const pathName = usePathname();
+
     return (
         <aside className="min-h-screen w-64 border-r border-neutral-700 bg-neutral-950 px-5 py-8 text-neutral-300">
             <Link
@@ -34,16 +40,26 @@ const AdminSidebar = () => {
 
             <nav className="mt-12" aria-label="Admin Navigation">
                 <ul className="space-y-2">
-                    {adminNavigation.map((item) => (
-                        <li key={item.href}>
-                            <Link
-                                href={item.href}
-                                className="block rounded-md px-4 py-2 text-sm text-neutral-300 transition hover:bg-white/10 hover:text-white"
-                            >
-                                {item.label}
-                            </Link>
-                        </li>
-                    ))}
+                    {adminNavigation.map((item) => {
+
+                        const isActive = item.href === "/admin"
+                            ? pathName === item.href
+                            : pathName.startsWith(item.href)
+
+                        return (
+                            <li key={item.href}>
+                                <Link
+                                    href={item.href}
+                                    className={`block rounded-md px-4 py-2 text-sm transition-all ${isActive
+                                        ? "text-emerald-400 bg-emerald-500/25 border-l-3 border-emerald-500"
+                                        : "text-neutral-400 hover:bg-white/10 hover:text-white"
+                                        }`}
+                                >
+                                    {item.label}
+                                </Link>
+                            </li>
+                        )
+                    })}
                 </ul>
             </nav>
 

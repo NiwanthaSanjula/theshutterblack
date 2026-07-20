@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import DeleteAlbumButton from "@/components/admin/delete-album-button";
 
 const dateFormatter = new Intl.DateTimeFormat("en-LK", {
     year: "numeric",
@@ -143,13 +144,30 @@ const page = async () => {
                                             {dateFormatter.format(album.createdAt)}
                                         </td>
 
-                                        <td className="px-6 py-5 text-right">
+                                        <td className="flex gap-3 px-6 py-5 text-right">
+
                                             <Link
-                                                href={`/admin/albums/${album.id}/edit`}
-                                                className="text-sm font-medium text-neutral-400 transition hover:text-neutral-200 border px-2 py-1 rounded"
+                                                href={`/admin/albums/${album.id}`}
+                                                className="text-sm font-medium text-emerald-600 hover:text-emerald-500 transitionborder px-2 py-1 rounded"
                                             >
-                                                Edit
+                                                Manage
                                             </Link>
+
+                                            {album.status === "PUBLISHED" && (
+                                                <Link
+                                                    href={`/albums/${album.slug}`}
+                                                    target="_blank"
+                                                    className="text-sm font-medium text-neutral-400 transition hover:text-neutral-200 px-2 py-1 rounded"
+                                                >
+                                                    View
+                                                </Link>
+                                            )}
+
+                                            <DeleteAlbumButton
+                                                albumId={album.id}
+                                                albumTitle={album.title}
+                                                photoCount={album._count.photos}
+                                            />
                                         </td>
                                     </tr>
                                 ))}

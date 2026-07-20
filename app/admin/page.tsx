@@ -60,10 +60,10 @@ export default async function adminDashboardPage() {
                 {dashboardCards.map((card) => (
                     <article
                         key={card.label}
-                        className="rounded-xl border border-neutral-800 bg-neutral-950 p-6"
+                        className="rounded-xl border border-neutral-800 border-l-3 border-l-emerald-500 bg-neutral-950 p-6"
                     >
-                        <p className="text-sm text-neutral-500">{card.label}</p>
-                        <p className="mt-3 text-3xl font-semibold">{card.value}</p>
+                        <p className="text-sm text-neutral-400">{card.label}</p>
+                        <p className="mt-3 text-3xl font-semibold text-emerald-500">{card.value}</p>
 
                     </article>
                 ))}

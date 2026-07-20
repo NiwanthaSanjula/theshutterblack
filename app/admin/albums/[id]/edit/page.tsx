@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { updateAlbum } from "@/actions/album-actions";
@@ -56,34 +55,13 @@ export default async function page({
     };
 
     return (
-        <div className="max-w-4xl mx-auto">
-            <div className="mb-8">
-                <Link
-                    href="/admin/albums"
-                    className="text-sm text-neutral-500 transition hover:text-emerald-500"
-                >
-                    ← Back to albums
-                </Link>
-
-                <p className="mt-6 text-sm text-neutral-500">
-                    Content management
-                </p>
-
-                <h1 className="mt-1 text-3xl font-semibold">
-                    Edit album
-                </h1>
-
-                <p className="mt-3 text-neutral-600">
-                    Update the album information and publishing settings.
-                </p>
-            </div>
-
+        <div className="max-w-7xl">
             <AlbumForm
                 mode="edit"
                 formAction={updateAlbumWithId}
                 initialValues={initialValues}
             />
         </div>
-    )
+    );
 }
 

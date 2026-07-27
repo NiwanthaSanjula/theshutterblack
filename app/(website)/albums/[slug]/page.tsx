@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import CldImage from "@/components/common/cloudinary-image";
 
 type AlbumDetailsPageProps = {
     params: Promise<{
@@ -80,6 +80,7 @@ export default async function AlbumDetailsPage({
 
                 select: {
                     id: true,
+                    publicid: true,
                     secureUrl: true,
                     caption: true,
                     altText: true,
@@ -177,9 +178,9 @@ export default async function AlbumDetailsPage({
                                 key={photo.id}
                                 className="overflow-hidden rounded-lg border border-black/10 bg-white"
                             >
-                                <div className="flex aspect-4/3 items-center justify-center bg-neutral-200">
-                                    <Image
-                                        src={photo.secureUrl}
+                                <div className="relative flex aspect-4/3 items-center justify-center bg-neutral-200">
+                                    <CldImage
+                                        src={photo.publicid}
                                         alt={
                                             photo.altText ??
                                             `${album.title} photograph ${index + 1}`

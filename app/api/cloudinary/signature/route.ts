@@ -1,7 +1,6 @@
 import { cloudinary } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-export const runtime = "nodejs";
 
 type SignatureRequestBody = {
     paramsToSign?: Record<string, unknown>
@@ -45,7 +44,7 @@ export async function POST(request: Request) {
 
     try {
         body = (await request.json()) as SignatureRequestBody
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             {
                 error: "Invalid request body."
@@ -89,9 +88,6 @@ export async function POST(request: Request) {
         albumsFolderPrefix.length,
     );
 
-    console.log("Cloudinary folder:", folder);
-    console.log("Extracted album ID:", albumId);
-
     if (!albumId) {
         return NextResponse.json(
             {
@@ -103,7 +99,6 @@ export async function POST(request: Request) {
         );
     }
 
-    console.log("Checking album in PostgreSQL:", albumId);
     const albumExists = await prisma.album.findUnique({
         where: {
             id: albumId,

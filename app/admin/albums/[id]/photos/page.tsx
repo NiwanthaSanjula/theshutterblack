@@ -1,6 +1,9 @@
 import AlbumPhotoUploader from "@/components/admin/album-photo-uploader";
+import DeletePhotoButton from "@/components/admin/delete-photo-button";
+import SetAlbumCoverButton from "@/components/admin/set-album-cover-button";
+import TogglePhotoVisibilityButton from "@/components/admin/toggle-photo-visibility-button";
 import { prisma } from "@/lib/prisma";
-import Image from "next/image";
+import CldImage from "@/components/common/cloudinary-image";
 import { notFound } from "next/navigation";
 
 type AlbumPhotosPageProps = {
@@ -45,6 +48,7 @@ export default async function AlbumPhotosPage({
 
                 select: {
                     id: true,
+                    publicid: true,
                     secureUrl: true,
                     caption: true,
                     altText: true,
@@ -92,19 +96,30 @@ export default async function AlbumPhotosPage({
                         {album.photos.map((photo, index) => (
                             <article
                                 key={photo.id}
-                                className="overflow-hidden rounded-lg border border-black/10 bg-white"
+                                className="overflow-hidden rounded-lg border border-black/10 bg-neutral-800 shadow-black/50 shadow-lg"
                             >
-                                <div className="relative aspect-4/3 bg-neutral-200">
-                                    <Image
-                                        src={photo.secureUrl}
+                                <div className="relative aspect-4/3 bg-neutral-800">
+                                    <CldImage
+                                        src={photo.publicid}
                                         alt={
                                             photo.altText ??
                                             `${album.title} photograph ${index + 1}`
                                         }
                                         fill
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                                        className="object-cover"
+                                        className={
+                                            photo.isVisible
+                                                ? "object-cover"
+                                                : "object-cover opacity-30 grayscale"
+                                        }
                                     />
+                                    {!photo.isVisible && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                                            <span className="rounded-full border border-white/20 bg-black/75 px-3 py-1.5 text-xs font-medium text-white">
+                                                Hidden from public album
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="p-4">
@@ -112,39 +127,58 @@ export default async function AlbumPhotosPage({
                                         Photograph {index + 1}
                                     </p>
 
-                                    <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-neutral-500">
-                                        {photo.width && photo.height && (
-                                            <span>
-                                                {photo.width} × {photo.height}
-                                            </span>
-                                        )}
+                                    <div className="mt-2 flex flex-col gap-1 text-xs text-neutral-500">
+                                        <div className="flex items-center gap-x-2">
+                                            {photo.width && photo.height && (
+                                                <span>
+                                                    {photo.width} × {photo.height}
+                                                </span>
+                                            )}
+                                            |
 
-                                        {photo.format && (
-                                            <span>
-                                                {photo.format.toUpperCase()}
-                                            </span>
-                                        )}
+                                            {photo.format && (
+                                                <span>
+                                                    {photo.format.toUpperCase()}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <span className="text-xs text-neutral-500">
+                                            Photo ID: {photo.id.slice(-6)}
+                                        </span>
 
-                                        {photo.fileSize && (
+                                        {/*photo.fileSize && (
                                             <span>
                                                 {formatFileSize(photo.fileSize)}
                                             </span>
-                                        )}
+                                        )*/}
+
+                                        <div className="mt-1 w-full flex items-center justify-between border-t border-neutral-700 pt-2">
+
+                                            <TogglePhotoVisibilityButton
+                                                photoId={photo.id}
+                                                isVisible={photo.isVisible}
+                                            />
+
+                                            <SetAlbumCoverButton
+                                                photoId={photo.id}
+                                                isCover={photo.isCover}
+                                                isVisible={photo.isVisible}
+                                            />
+
+                                            {!photo.isVisible && (
+                                                <span className="mt-3 inline-block rounded-full bg-neutral-100 px-2 py-1 text-xs font-medium text-neutral-600">
+                                                    Hidden
+                                                </span>
+                                            )}
+
+                                            <DeletePhotoButton
+                                                photoId={photo.id}
+                                                photoLabel={`Photograph ${index + 1}`}
+                                                isCover={photo.isCover}
+                                            />
+                                        </div>
                                     </div>
-
-                                    {!photo.isVisible && (
-                                        <span className="mt-3 inline-block rounded-full bg-neutral-100 px-2 py-1 text-xs font-medium text-neutral-600">
-                                            Hidden
-                                        </span>
-                                    )}
-
-                                    {photo.isCover && (
-                                        <span className="mt-3 inline-block rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800">
-                                            Cover
-                                        </span>
-                                    )}
                                 </div>
-
                             </article>
                         ))}
                     </div>

@@ -49,6 +49,9 @@ const page = async () => {
 
                 orderBy: [
                     {
+                        isCover: "desc",
+                    },
+                    {
                         displayOrder: "asc",
                     },
                     {
@@ -59,6 +62,7 @@ const page = async () => {
                 take: 1,
 
                 select: {
+                    publicid: true,
                     secureUrl: true,
                     altText: true
                 }
@@ -106,7 +110,7 @@ const page = async () => {
                                 location={album.location}
                                 eventDate={album.eventDate}
                                 photoCount={album._count.photos}
-                                coverUrl={album.photos[0]?.secureUrl ?? null}
+                                coverPublicId={album.photos[0]?.publicid ?? null}
                                 coverAlt={album.photos[0]?.altText ?? null}
                             />
                         ))}

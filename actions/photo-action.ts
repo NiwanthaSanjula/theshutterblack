@@ -1,5 +1,6 @@
 "use server";
 
+import { cloudinary } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -169,7 +170,502 @@ export async function saveUploadedPhoto(
             message: "The image uploaded to Cloudinary, but its database record could not be saved."
         };
     }
+}
+
+export async function deletePhoto(
+    photoId: string,
+): Promise<PhotoActionResult> {
+    /**
+     *  Temopory restriction untill authentication is added.
+     */
+    if (process.env.NODE_ENV === "production") {
+        return {
+            success: false,
+            message: "Photo deletion requires admin authentication in production."
+        };
+    }
+
+    const normalizedPhotoId = photoId.trim();
+
+    if (!normalizedPhotoId) {
+        return {
+            success: false,
+            message: "Photo ID is required"
+        };
+    }
+
+    const photo = await prisma.photo.findUnique({
+        where: {
+            id: normalizedPhotoId,
+        },
+
+        select: {
+            id: true,
+            publicid: true,
+            albumId: true,
+            isCover: true,
+            album: {
+                select: {
+                    slug: true,
+                }
+            }
+        }
+    });
+
+    if (!photo) {
+        return {
+            success: false,
+            message: "The photo you are trying to delete could not be found."
+        };
+    }
+
+    try {
+        const cloudinaryResult = await cloudinary.uploader.destroy(
+            photo.publicid,
+            {
+                resource_type: "image",
+                invalidate: true,
+            }
+        );
+
+        const cloudinaryDeletionSucceeded =
+            cloudinaryResult.result === "ok" ||
+            cloudinaryResult.result === "not found";
+
+        if (!cloudinaryDeletionSucceeded) {
+            console.error(
+                "Cloudinary did not confirm photo deletion.",
+                cloudinaryResult
+            );
+
+            return {
+                success: false,
+                message: "Cloudinary could not delete this image. Please try again."
+            };
+        }
+
+        await prisma.photo.delete({
+            where: {
+                id: photo.id
+            },
+        });
+
+        /**
+         * This prepares the system for the upcomming album-cover feature
+         */
+        if (photo.isCover) {
+            const nextCoverPhoto = await prisma.photo.findFirst({
+                where: {
+                    albumId: photo.albumId,
+                    isVisible: true,
+                },
+
+                orderBy: [
+                    {
+                        displayOrder: "asc",
+                    },
+                    {
+                        createdAt: "asc"
+                    }
+                ],
+
+                select: { id: true },
+            });
+
+            if (nextCoverPhoto) {
+                await prisma.photo.update({
+                    where: {
+                        id: nextCoverPhoto.id,
+                    },
+                    data: {
+                        isCover: true
+                    }
+                });
+            }
+        }
+
+        revalidatePath("/admin");
+        revalidatePath("/admin/albums");
+        if (photo.albumId) {
+            revalidatePath(`/admin/albums/${photo.albumId}`, "layout");
+            revalidatePath(`/admin/albums/${photo.albumId}/photos`);
+        }
+
+        revalidatePath("/");
+        revalidatePath("/albums");
+        if (photo.album?.slug) {
+            revalidatePath(`/albums/${photo.album.slug}`);
+        }
+
+        return {
+            success: true,
+        };
+
+
+
+    } catch (error) {
+        console.error("Failed to delete photo:", error);
+
+        return {
+            success: false,
+            message:
+                "The photograph could not be deleted. Please try again.",
+        };
+    }
+}
+
+export async function setAlbumCover(
+    photoId: string,
+): Promise<PhotoActionResult> {
+    /**
+     * Tempory restriction until authentication is added.
+     */
+    if (process.env.NODE_ENV === "production") {
+        return {
+            success: false,
+            message:
+                "Cover selection requires admin authentication in production.",
+        };
+    }
+
+    const normalizedPhotoId = photoId.trim();
+
+    if (!normalizedPhotoId) {
+        return {
+            success: false,
+            message: "A valid photo ID is required.",
+        };
+    }
+
+    const photo = await prisma.photo.findUnique({
+        where: {
+            id: normalizedPhotoId,
+        },
+
+        select: {
+            id: true,
+            albumId: true,
+            isVisible: true,
+            isCover: true,
+
+            album: {
+                select: {
+                    slug: true,
+                },
+            },
+        }
+    })
+
+    if (!photo) {
+        return {
+            success: false,
+            message: "This photograph could not be found.",
+        };
+    }
+
+    if (!photo.isVisible) {
+        return {
+            success: false,
+            message:
+                "A hidden photograph cannot be used as the album cover.",
+        };
+    }
+
+    if (photo.isCover) {
+        return {
+            success: true,
+            photoId: photo.id,
+        };
+    }
+
+    try {
+        await prisma.$transaction([
+            prisma.photo.updateMany({
+                where: {
+                    albumId: photo.albumId,
+                    isCover: true,
+                },
+
+                data: {
+                    isCover: false,
+                }
+            }),
+
+            prisma.photo.update({
+                where: {
+                    id: photo.id,
+                },
+
+                data: {
+                    isCover: true,
+                }
+            })
+        ])
+
+        revalidatePath("/admin");
+        revalidatePath("/admin/albums");
+
+        revalidatePath(
+            `/admin/albums/${photo.albumId}`,
+            "layout",
+        );
+
+        revalidatePath(
+            `/admin/albums/${photo.albumId}/photos`,
+        );
+
+        revalidatePath("/");
+        revalidatePath("/albums");
+        if (photo.album?.slug) {
+            revalidatePath(`/albums/${photo.album.slug}`);
+        }
+
+        return {
+            success: true,
+            photoId: photo.id,
+        };
+
+    } catch (error) {
+        console.error(
+            "Failed to set album cover:",
+            error,
+        );
+
+        return {
+            success: false,
+            message:
+                "The album cover could not be changed. Please try again.",
+        };
+    }
+
 
 
 }
 
+export async function togglePhotoVisibility(
+    photoId: string
+): Promise<PhotoActionResult> {
+    /**
+   * Temporary restriction until authentication is added.
+   */
+    if (process.env.NODE_ENV === "production") {
+        return {
+            success: false,
+            message:
+                "Photo visibility changes require admin authentication in production.",
+        };
+    }
+
+    const normalizedPhotoId = photoId.trim();
+
+    if (!normalizedPhotoId) {
+        return {
+            success: false,
+            message: "A valid photo ID is required"
+        };
+    }
+
+    const photo = await prisma.photo.findUnique({
+        where: {
+            id: normalizedPhotoId
+        },
+
+        select: {
+            id: true,
+            albumId: true,
+            isVisible: true,
+            isCover: true,
+
+            album: {
+                select: {
+                    slug: true,
+                },
+            },
+        },
+    });
+
+    if (!photo) {
+        return {
+            success: true,
+            message: "This image could not be found",
+        };
+    }
+
+    const shouldBecomeVisible = !photo.isVisible;
+
+    try {
+        /**
+         * Showing a hidden photograph
+         */
+        if (shouldBecomeVisible) {
+            const currentVisibleCover = await prisma.photo.findFirst({
+                where: {
+                    albumId: photo.albumId,
+                    isCover: true,
+                    isVisible: true
+                },
+
+                select: {
+                    id: true,
+                },
+            });
+
+            /**
+             * If the album has no visible cover, make this newly shown image the cover
+             */
+            if (!currentVisibleCover) {
+                await prisma.$transaction([
+                    prisma.photo.updateMany({
+                        where: {
+                            albumId: photo.albumId,
+                            isCover: true
+                        },
+                        data: {
+                            isCover: false
+                        }
+                    }),
+
+                    prisma.photo.update({
+                        where: {
+                            id: photo.id,
+                        },
+                        data: {
+                            isCover: true,
+                            isVisible: true
+                        }
+                    })
+                ])
+            } else {
+                await prisma.photo.update({
+                    where: {
+                        id: photo.id,
+                    },
+
+                    data: {
+                        isVisible: true,
+                        isCover: false
+                    },
+                });
+            }
+        }
+
+        /**
+         * Hiding the current cover image
+         */
+        if (!shouldBecomeVisible && photo.isCover) {
+            const replacementCover =
+                await prisma.photo.findFirst({
+                    where: {
+                        albumId: photo.albumId,
+                        id: {
+                            not: photo.id,
+                        },
+                        isVisible: true
+                    },
+
+                    orderBy: [
+                        {
+                            displayOrder: "asc",
+                        },
+                        {
+                            createdAt: "asc",
+                        },
+                    ],
+
+                    select: {
+                        id: true,
+                    },
+                });
+
+            if (replacementCover) {
+                await prisma.$transaction([
+                    prisma.photo.update({
+                        where: {
+                            id: photo.id,
+                        },
+
+                        data: {
+                            isVisible: false,
+                            isCover: false
+                        },
+                    }),
+
+                    prisma.photo.update({
+                        where: {
+                            id: replacementCover.id,
+
+                        },
+
+                        data: {
+                            isCover: true,
+                        },
+                    }),
+                ]);
+            } else {
+                await prisma.photo.update({
+                    where: {
+                        id: photo.id,
+                    },
+
+                    data: {
+                        isVisible: false,
+                        isCover: false
+                    },
+                });
+            }
+        }
+
+        /**
+         * Hiding a normal non cover image
+         */
+        if (!shouldBecomeVisible && !photo.isCover) {
+            await prisma.photo.update({
+                where: {
+                    id: photo.id,
+                },
+
+                data: {
+                    isVisible: false,
+                    isCover: false,
+                },
+            });
+        }
+
+        revalidatePath("/admin");
+        revalidatePath("/admin/albums");
+
+        revalidatePath(
+            `/admin/albums/${photo.albumId}`,
+            "layout",
+        );
+
+        revalidatePath(
+            `/admin/albums/${photo.albumId}/photos`,
+        );
+
+        revalidatePath("/");
+        revalidatePath("/albums");
+        if (photo.album) {
+            revalidatePath(`/albums/${photo.album.slug}`);
+        }
+
+        return {
+            success: true,
+            photoId: photo.id,
+        };
+
+
+    } catch (error) {
+        console.error(
+            "Failed to change photo visibility:",
+            error,
+        );
+
+        return {
+            success: false,
+            message:
+                "The photograph visibility could not be changed. Please try again.",
+        };
+
+    }
+}

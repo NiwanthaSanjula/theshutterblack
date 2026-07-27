@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import CldImage from "@/components/common/cloudinary-image";
 
 type AlbumCardProps = {
     title: string;
@@ -8,7 +8,7 @@ type AlbumCardProps = {
     location: string | null;
     eventDate: Date | null;
     photoCount: number;
-    coverUrl: string | null;
+    coverPublicId: string | null;
     coverAlt: string | null;
 };
 
@@ -25,7 +25,7 @@ export default function AlbumCard({
     location,
     eventDate,
     photoCount,
-    coverUrl,
+    coverPublicId,
     coverAlt,
 }: AlbumCardProps) {
     return (
@@ -34,13 +34,13 @@ export default function AlbumCard({
                 href={`/albums/${slug}`}
                 className="group block"
             >
-                <div className="relative aspect-4/3 overflow-hidden bg-neutral-200">
-                    {coverUrl ? (
-                        <Image
-                            src={coverUrl}
+                <div className="relative aspect-4/3 overflow-hidden bg-neutral-700">
+                    {coverPublicId ? (
+                        <CldImage
+                            src={coverPublicId}
                             alt={coverAlt ?? `${title} album cover`}
                             fill
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33wv"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             className="object-cover transition duration-500 group-hover:scale-105"
                         />
                     ) : (

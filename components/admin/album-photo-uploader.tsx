@@ -88,6 +88,8 @@ export default function AlbumPhotoUploader({
                         multiple: true,
                         maxFiles: 50,
                         maxFileSize: 20_000_000,
+                        maxImageWidth: 2400,
+                        maxImageHeight: 2400,
                         clientAllowedFormats: [
                             "jpg",
                             "jpeg",

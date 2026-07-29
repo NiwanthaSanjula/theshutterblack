@@ -2,7 +2,7 @@
 
 import { deleteAlbum } from "@/actions/album-actions"
 import { useRouter } from "next/navigation"
-import { useState, useTransition } from "react"
+import { useRef, useState, useTransition } from "react"
 
 type DeleteAlbumButtonProps = {
     albumId: string;
@@ -20,6 +20,7 @@ export default function DeleteAlbumButton({
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isPending, startTransition] = useTransition();
+    const deletionLockRef = useRef(false);
 
     function openDialog() {
         setError(null);
@@ -36,22 +37,38 @@ export default function DeleteAlbumButton({
     }
 
     function handleDelete() {
+        if (deletionLockRef.current) {
+            return;
+        }
+
+        deletionLockRef.current = true;
         setError(null);
 
         startTransition(async () => {
-            const result = await deleteAlbum(albumId);
+            try {
+                const result = await deleteAlbum(albumId);
 
-            if (!result.success) {
+                if (!result.success) {
+                    setError(
+                        result.message ?? "The album could not be deleted."
+                    );
+                    return;
+                }
+
+                setIsDialogOpen(false);
+                router.refresh();
+
+            } catch (error) {
+                console.error("Unexpected album deletion error: ");
+                error
+
                 setError(
-                    result.message ?? "The album could not be deleted."
+                    "The album could not be deleted. Please try again."
                 );
-
-                return;
+            } finally {
+                deletionLockRef.current = false;
             }
-
-            setIsDialogOpen(false);
-            router.refresh();
-        })
+        });
     }
 
     return (
@@ -140,7 +157,9 @@ export default function DeleteAlbumButton({
                                 className="rounded-md bg-red-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                                 {isPending
-                                    ? "Deleting album..."
+                                    ? photoCount > 0
+                                        ? "Deleting album and photos..."
+                                        : "Deleting album..."
                                     : "Delete permanently"
                                 }
                             </button>

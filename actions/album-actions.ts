@@ -4,6 +4,7 @@ import { redirect, } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { albumSchema } from "@/lib/validations/album";
+import { cloudinary } from "@/lib/cloudinary";
 
 export type AlbumFormValues = {
     title: string;
@@ -98,6 +99,31 @@ function getAlbumFormValues(formData: FormData): AlbumFormValues {
         status: formData.get("status") === "PUBLISHED" ? "PUBLISHED" : "DRAFT",
         isFeatured: formData.get("isFeatured") === "on",
     };
+}
+
+// --- Cloudinary Delete Album Helper ---
+const CLOUDINARY_DELETE_BATCH_SIZE = 100;
+
+function createBatches<T>(
+    items: T[],
+    batchSize: number,
+): T[][] {
+    const batches: T[][] = [];
+
+    for (
+        let startIndex = 0;
+        startIndex < items.length;
+        startIndex += batchSize
+    ) {
+        batches.push(
+            items.slice(
+                startIndex,
+                startIndex + batchSize
+            ),
+        );
+    }
+
+    return batches;
 }
 
 /* 
@@ -294,7 +320,13 @@ export async function deleteAlbum(
         select: {
             id: true,
             title: true,
-            slug: true
+            slug: true,
+
+            photos: {
+                select: {
+                    publicid: true,
+                }
+            }
         },
     });
 
@@ -306,12 +338,73 @@ export async function deleteAlbum(
     }
 
     try {
+        const publicIds = existingAlbum.photos.map(
+            (photo) => photo.publicid,
+        );
 
+        const publicIdBatches = createBatches(
+            publicIds,
+            CLOUDINARY_DELETE_BATCH_SIZE
+        );
+
+        /**
+         * Delete Cloudinary assets first.
+         * 
+         * Requests are deliberately processed one by one to avoid sending many destructive operations simultaneously.
+        */
+        for (const publicIdBatch of publicIdBatches) {
+            const cloudinaryResult =
+                await cloudinary.api.delete_resources(
+                    publicIdBatch,
+                    {
+                        resource_type: "image",
+                        type: "upload",
+                        invalidate: true,
+                    },
+                );
+
+            const deletionStatuses = cloudinaryResult.deleted as | Record<string, string> | undefined;
+
+            const failedPublicIds = publicIdBatch.filter((publicId) => {
+                const status = deletionStatuses?.[publicId];
+
+                return (
+                    status !== "deleted" &&
+                    status !== "not_found"
+                );
+            });
+
+            if (failedPublicIds.length > 0) {
+                console.error(
+                    "Cloudinary album deletion failed:",
+                    {
+                        albumId: existingAlbum.id,
+                        failedPublicIds,
+                        cloudinaryResult,
+                    },
+                );
+
+                return {
+                    success: false,
+                    message: "Some album photographs could not be removed from Cloudinary. The album was not deleted. Please try again."
+                }
+            }
+        }
+
+        /**
+         * Only delete the postgreSQL album after all
+         * Cloudinary assets are confirmed absent
+         * 
+         * Related photo rows are deleted automatically through onDelete: Cascase.
+         */
         await prisma.album.delete({
             where: {
                 id: existingAlbum.id
             },
         });
+
+
+
     } catch (error) {
         console.error("Failed to delete album: ", error);
 
@@ -331,7 +424,5 @@ export async function deleteAlbum(
         success: true,
     };
 }
-
-// --- 
 
 

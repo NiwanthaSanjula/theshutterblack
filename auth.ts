@@ -1,7 +1,7 @@
 import { compare } from "bcryptjs";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import z, { email } from "zod";
+import z from "zod";
 
 /**
  * Credentials arrive from the browser as unknown data.

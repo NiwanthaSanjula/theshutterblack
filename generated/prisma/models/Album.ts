@@ -532,9 +532,9 @@ export type AlbumSumOrderByAggregateInput = {
   displayOrder?: Prisma.SortOrder
 }
 
-export type AlbumNullableScalarRelationFilter = {
-  is?: Prisma.AlbumWhereInput | null
-  isNot?: Prisma.AlbumWhereInput | null
+export type AlbumScalarRelationFilter = {
+  is?: Prisma.AlbumWhereInput
+  isNot?: Prisma.AlbumWhereInput
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
@@ -567,12 +567,10 @@ export type AlbumCreateNestedOneWithoutPhotosInput = {
   connect?: Prisma.AlbumWhereUniqueInput
 }
 
-export type AlbumUpdateOneWithoutPhotosNestedInput = {
+export type AlbumUpdateOneRequiredWithoutPhotosNestedInput = {
   create?: Prisma.XOR<Prisma.AlbumCreateWithoutPhotosInput, Prisma.AlbumUncheckedCreateWithoutPhotosInput>
   connectOrCreate?: Prisma.AlbumCreateOrConnectWithoutPhotosInput
   upsert?: Prisma.AlbumUpsertWithoutPhotosInput
-  disconnect?: Prisma.AlbumWhereInput | boolean
-  delete?: Prisma.AlbumWhereInput | boolean
   connect?: Prisma.AlbumWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AlbumUpdateToOneWithWhereWithoutPhotosInput, Prisma.AlbumUpdateWithoutPhotosInput>, Prisma.AlbumUncheckedUpdateWithoutPhotosInput>
 }

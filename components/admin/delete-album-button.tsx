@@ -59,8 +59,7 @@ export default function DeleteAlbumButton({
                 router.refresh();
 
             } catch (error) {
-                console.error("Unexpected album deletion error: ");
-                error
+                console.error("Unexpected album deletion error: ", error);
 
                 setError(
                     "The album could not be deleted. Please try again."

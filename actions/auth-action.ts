@@ -2,7 +2,7 @@
 
 import { signIn, signOut } from "@/auth"
 import { AuthError } from "next-auth"
-import z, { email } from "zod"
+import z from "zod"
 
 /**
  * Login values arrive from the browser and must therefore be treated as untrusted input.

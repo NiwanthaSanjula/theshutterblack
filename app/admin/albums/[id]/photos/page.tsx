@@ -10,7 +10,7 @@ type AlbumPhotosPageProps = {
     params: Promise<{ id: string }>;
 }
 
-function formatFileSize(bytes: number | null) {
+/*function formatFileSize(bytes: number | null) {
     if (!bytes) {
         return null;
     }
@@ -18,7 +18,7 @@ function formatFileSize(bytes: number | null) {
     const megabytes = bytes / 1_000_000;
 
     return `${megabytes.toFixed(1)} MB`
-}
+}*/
 
 export default async function AlbumPhotosPage({
     params,

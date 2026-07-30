@@ -266,7 +266,7 @@ export type PhotoGroupByOutputType = {
   isCover: boolean
   createdAt: Date
   updatedAt: Date
-  albumId: string | null
+  albumId: string
   _count: PhotoCountAggregateOutputType | null
   _avg: PhotoAvgAggregateOutputType | null
   _sum: PhotoSumAggregateOutputType | null
@@ -307,8 +307,8 @@ export type PhotoWhereInput = {
   isCover?: Prisma.BoolFilter<"Photo"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
-  albumId?: Prisma.StringNullableFilter<"Photo"> | string | null
-  album?: Prisma.XOR<Prisma.AlbumNullableScalarRelationFilter, Prisma.AlbumWhereInput> | null
+  albumId?: Prisma.StringFilter<"Photo"> | string
+  album?: Prisma.XOR<Prisma.AlbumScalarRelationFilter, Prisma.AlbumWhereInput>
 }
 
 export type PhotoOrderByWithRelationInput = {
@@ -326,7 +326,7 @@ export type PhotoOrderByWithRelationInput = {
   isCover?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  albumId?: Prisma.SortOrderInput | Prisma.SortOrder
+  albumId?: Prisma.SortOrder
   album?: Prisma.AlbumOrderByWithRelationInput
 }
 
@@ -348,8 +348,8 @@ export type PhotoWhereUniqueInput = Prisma.AtLeast<{
   isCover?: Prisma.BoolFilter<"Photo"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
-  albumId?: Prisma.StringNullableFilter<"Photo"> | string | null
-  album?: Prisma.XOR<Prisma.AlbumNullableScalarRelationFilter, Prisma.AlbumWhereInput> | null
+  albumId?: Prisma.StringFilter<"Photo"> | string
+  album?: Prisma.XOR<Prisma.AlbumScalarRelationFilter, Prisma.AlbumWhereInput>
 }, "id" | "publicid">
 
 export type PhotoOrderByWithAggregationInput = {
@@ -367,7 +367,7 @@ export type PhotoOrderByWithAggregationInput = {
   isCover?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  albumId?: Prisma.SortOrderInput | Prisma.SortOrder
+  albumId?: Prisma.SortOrder
   _count?: Prisma.PhotoCountOrderByAggregateInput
   _avg?: Prisma.PhotoAvgOrderByAggregateInput
   _max?: Prisma.PhotoMaxOrderByAggregateInput
@@ -393,7 +393,7 @@ export type PhotoScalarWhereWithAggregatesInput = {
   isCover?: Prisma.BoolWithAggregatesFilter<"Photo"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Photo"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Photo"> | Date | string
-  albumId?: Prisma.StringNullableWithAggregatesFilter<"Photo"> | string | null
+  albumId?: Prisma.StringWithAggregatesFilter<"Photo"> | string
 }
 
 export type PhotoCreateInput = {
@@ -411,7 +411,7 @@ export type PhotoCreateInput = {
   isCover?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  album?: Prisma.AlbumCreateNestedOneWithoutPhotosInput
+  album: Prisma.AlbumCreateNestedOneWithoutPhotosInput
 }
 
 export type PhotoUncheckedCreateInput = {
@@ -429,7 +429,7 @@ export type PhotoUncheckedCreateInput = {
   isCover?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  albumId?: string | null
+  albumId: string
 }
 
 export type PhotoUpdateInput = {
@@ -447,7 +447,7 @@ export type PhotoUpdateInput = {
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  album?: Prisma.AlbumUpdateOneWithoutPhotosNestedInput
+  album?: Prisma.AlbumUpdateOneRequiredWithoutPhotosNestedInput
 }
 
 export type PhotoUncheckedUpdateInput = {
@@ -465,7 +465,7 @@ export type PhotoUncheckedUpdateInput = {
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  albumId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PhotoCreateManyInput = {
@@ -483,7 +483,7 @@ export type PhotoCreateManyInput = {
   isCover?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  albumId?: string | null
+  albumId: string
 }
 
 export type PhotoUpdateManyMutationInput = {
@@ -518,7 +518,7 @@ export type PhotoUncheckedUpdateManyInput = {
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  albumId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  albumId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PhotoListRelationFilter = {
@@ -727,7 +727,7 @@ export type PhotoScalarWhereInput = {
   isCover?: Prisma.BoolFilter<"Photo"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Photo"> | Date | string
-  albumId?: Prisma.StringNullableFilter<"Photo"> | string | null
+  albumId?: Prisma.StringFilter<"Photo"> | string
 }
 
 export type PhotoCreateManyAlbumInput = {
@@ -816,7 +816,7 @@ export type PhotoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   updatedAt?: boolean
   albumId?: boolean
-  album?: boolean | Prisma.Photo$albumArgs<ExtArgs>
+  album?: boolean | Prisma.AlbumDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["photo"]>
 
 export type PhotoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -835,7 +835,7 @@ export type PhotoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   albumId?: boolean
-  album?: boolean | Prisma.Photo$albumArgs<ExtArgs>
+  album?: boolean | Prisma.AlbumDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["photo"]>
 
 export type PhotoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -854,7 +854,7 @@ export type PhotoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   albumId?: boolean
-  album?: boolean | Prisma.Photo$albumArgs<ExtArgs>
+  album?: boolean | Prisma.AlbumDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["photo"]>
 
 export type PhotoSelectScalar = {
@@ -877,19 +877,19 @@ export type PhotoSelectScalar = {
 
 export type PhotoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "publicid" | "secureUrl" | "caption" | "altText" | "width" | "height" | "format" | "fileSize" | "displayOrder" | "isVisible" | "isCover" | "createdAt" | "updatedAt" | "albumId", ExtArgs["result"]["photo"]>
 export type PhotoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  album?: boolean | Prisma.Photo$albumArgs<ExtArgs>
+  album?: boolean | Prisma.AlbumDefaultArgs<ExtArgs>
 }
 export type PhotoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  album?: boolean | Prisma.Photo$albumArgs<ExtArgs>
+  album?: boolean | Prisma.AlbumDefaultArgs<ExtArgs>
 }
 export type PhotoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  album?: boolean | Prisma.Photo$albumArgs<ExtArgs>
+  album?: boolean | Prisma.AlbumDefaultArgs<ExtArgs>
 }
 
 export type $PhotoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Photo"
   objects: {
-    album: Prisma.$AlbumPayload<ExtArgs> | null
+    album: Prisma.$AlbumPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -906,7 +906,7 @@ export type $PhotoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     isCover: boolean
     createdAt: Date
     updatedAt: Date
-    albumId: string | null
+    albumId: string
   }, ExtArgs["result"]["photo"]>
   composites: {}
 }
@@ -1301,7 +1301,7 @@ readonly fields: PhotoFieldRefs;
  */
 export interface Prisma__PhotoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  album<T extends Prisma.Photo$albumArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Photo$albumArgs<ExtArgs>>): Prisma.Prisma__AlbumClient<runtime.Types.Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  album<T extends Prisma.AlbumDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AlbumDefaultArgs<ExtArgs>>): Prisma.Prisma__AlbumClient<runtime.Types.Result.GetResult<Prisma.$AlbumPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1744,25 +1744,6 @@ export type PhotoDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Photos to delete.
    */
   limit?: number
-}
-
-/**
- * Photo.album
- */
-export type Photo$albumArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Album
-   */
-  select?: Prisma.AlbumSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Album
-   */
-  omit?: Prisma.AlbumOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AlbumInclude<ExtArgs> | null
-  where?: Prisma.AlbumWhereInput
 }
 
 /**

@@ -79,8 +79,8 @@ model Photo {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  albumId String?
-  album   Album?  @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  albumId String
+  album   Album  @relation(fields: [albumId], references: [id], onDelete: Cascade)
 
   @@index([albumId])
   @@index([albumId, displayOrder])

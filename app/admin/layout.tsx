@@ -1,13 +1,21 @@
 import AdminSidebar from "@/components/admin/admin-sidebar";
+import { requireAdmin } from "@/lib/auth/require-admin";
 
 type AdminLayoutProps = Readonly<{
     children: React.ReactNode;
 }>;
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+export default async function AdminLayout({ children }: AdminLayoutProps) {
+
+    const session = await requireAdmin();
+
     return (
         <div className="flex min-h-screen bg-neutral-900">
-            <AdminSidebar />
+            <AdminSidebar
+                adminEmail={
+                    session.user?.email ?? "CMS Administrator"
+                }
+            />
 
             <div className="min-w-0 max-w-6xl mx-auto flex-1">
                 {/**                 

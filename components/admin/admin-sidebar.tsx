@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LogoutButton from "@/components/admin/logout-button";
+
+type AdminSidebarProps = {
+    adminEmail: string;
+};
 
 const adminNavigation = [
     {
@@ -23,12 +28,12 @@ const adminNavigation = [
 ];
 
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ adminEmail }: AdminSidebarProps) => {
 
     const pathName = usePathname();
 
     return (
-        <aside className="min-h-screen w-64 border-r border-neutral-700 bg-neutral-950 px-5 py-8 text-neutral-300">
+        <aside className="flex flex-col min-h-screen w-64 border-r border-neutral-700 bg-neutral-950 px-5 py-8 text-neutral-300">
             <Link
                 href={"/admin"}
                 className="block"
@@ -70,6 +75,23 @@ const AdminSidebar = () => {
                 >
                     View public website
                 </Link>
+            </div>
+
+            <div className="mt-auto border-t border-neutral-800 pt-6">
+                <div className="mb-4">
+                    <p className="text-xs font-medium uppercase tracking-wider text-neutral-600">
+                        Signed in as
+                    </p>
+
+                    <p
+                        title={adminEmail}
+                        className="mt-1 truncate text-sm font-medium text-neutral-300"
+                    >
+                        {adminEmail}
+                    </p>
+                </div>
+
+                <LogoutButton />
             </div>
         </aside>
     )

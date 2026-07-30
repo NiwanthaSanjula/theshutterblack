@@ -1,3 +1,4 @@
+import { getAdminSession } from "@/lib/auth/require-admin";
 import { cloudinary } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
@@ -9,20 +10,17 @@ type SignatureRequestBody = {
 const albumsFolderPrefix = "the-shutter-black/albums/";
 
 export async function POST(request: Request) {
-    /**
-     * Tempory security restriction.
-     * 
-     * Remove this after admin authentication is implemented
-     * and repalce it with a real admin session check.
-    */
+    const adminSession = await getAdminSession();
 
-    if (process.env.NODE_ENV === "production") {
-        return NextResponse.json(
+    if (!adminSession) {
+        return Response.json(
             {
-                error: "Cloudinary uploads require admin authentication before production deployment."
+                success: false,
+                error:
+                    "Your administrator session is missing or has expired.",
             },
             {
-                status: 503,
+                status: 401,
             },
         );
     }

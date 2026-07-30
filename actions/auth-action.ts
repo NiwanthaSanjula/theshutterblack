@@ -1,6 +1,6 @@
 "use server"
 
-import { signIn } from "@/auth"
+import { signIn, signOut } from "@/auth"
 import { AuthError } from "next-auth"
 import z, { email } from "zod"
 
@@ -95,4 +95,10 @@ export async function loginAdmin(
     return {
         error: null
     };
+}
+
+export async function logoutAdmin(): Promise<void> {
+    await signOut({
+        redirectTo: "/login",
+    });
 }

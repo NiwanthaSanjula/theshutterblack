@@ -3,6 +3,7 @@
 import { cloudinary } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { getAdminSession } from "@/lib/auth/require-admin";
 
 export type SaveUploadedPhotoInput = {
     albumId: string;
@@ -39,16 +40,15 @@ function validatePositiveInteger(
 export async function saveUploadedPhoto(
     input: SaveUploadedPhotoInput,
 ): Promise<PhotoActionResult> {
-    /**
-     * Tempory restriction untill authentication is added.
-    */
-    if (process.env.NODE_ENV === "production") {
+    const adminSession = await getAdminSession();
+
+    if (!adminSession) {
         return {
             success: false,
-            message: "Photo saving requires admin authentication is production."
+            message:
+                "Your administrator session is missing or has expired. Sign in again.",
         };
     }
-
     if (!input.albumId || !input.publicId) {
         return {
             success: false,
@@ -175,13 +175,13 @@ export async function saveUploadedPhoto(
 export async function deletePhoto(
     photoId: string,
 ): Promise<PhotoActionResult> {
-    /**
-     *  Temopory restriction untill authentication is added.
-     */
-    if (process.env.NODE_ENV === "production") {
+    const adminSession = await getAdminSession();
+
+    if (!adminSession) {
         return {
             success: false,
-            message: "Photo deletion requires admin authentication in production."
+            message:
+                "Your administrator session is missing or has expired. Sign in again.",
         };
     }
 
@@ -317,14 +317,13 @@ export async function deletePhoto(
 export async function setAlbumCover(
     photoId: string,
 ): Promise<PhotoActionResult> {
-    /**
-     * Tempory restriction until authentication is added.
-     */
-    if (process.env.NODE_ENV === "production") {
+    const adminSession = await getAdminSession();
+
+    if (!adminSession) {
         return {
             success: false,
             message:
-                "Cover selection requires admin authentication in production.",
+                "Your administrator session is missing or has expired. Sign in again.",
         };
     }
 
@@ -445,17 +444,15 @@ export async function setAlbumCover(
 export async function togglePhotoVisibility(
     photoId: string
 ): Promise<PhotoActionResult> {
-    /**
-   * Temporary restriction until authentication is added.
-   */
-    if (process.env.NODE_ENV === "production") {
+    const adminSession = await getAdminSession();
+
+    if (!adminSession) {
         return {
             success: false,
             message:
-                "Photo visibility changes require admin authentication in production.",
+                "Your administrator session is missing or has expired. Sign in again.",
         };
     }
-
     const normalizedPhotoId = photoId.trim();
 
     if (!normalizedPhotoId) {

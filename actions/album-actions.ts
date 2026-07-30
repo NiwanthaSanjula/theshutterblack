@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { albumSchema } from "@/lib/validations/album";
 import { cloudinary } from "@/lib/cloudinary";
+import { getAdminSession } from "@/lib/auth/require-admin";
 
 export type AlbumFormValues = {
     title: string;
@@ -160,6 +161,17 @@ export async function createAlbum(
     _previousState: AlbumFormState,
     formData: FormData,
 ): Promise<AlbumFormState> {
+
+    const adminSession = await getAdminSession();
+
+    if (!adminSession) {
+        return {
+
+            message:
+                "Your administrator session is missing or has expired. Sign in again.",
+        };
+    }
+
     const rawValues = getAlbumFormValues(formData);
     const validationResult = albumSchema.safeParse(rawValues);
 
@@ -211,6 +223,16 @@ export async function updateAlbum(
     _previousState: AlbumFormState,
     formData: FormData,
 ): Promise<AlbumFormState> {
+
+    const adminSession = await getAdminSession();
+
+    if (!adminSession) {
+        return {
+            message:
+                "Your administrator session is missing or has expired. Sign in again.",
+        };
+    }
+
     const rawValues = getAlbumFormValues(formData);
     const validationResult = albumSchema.safeParse(rawValues);
 
@@ -305,10 +327,21 @@ export async function updateAlbum(
 export async function deleteAlbum(
     albumId: string,
 ): Promise<DeleteAlbumResult> {
+
     if (!albumId) {
         return {
             success: false,
             message: "A valid album ID is required"
+        };
+    }
+
+    const adminSession = await getAdminSession();
+
+    if (!adminSession) {
+        return {
+            success: false,
+            message:
+                "Your administrator session is missing or has expired. Sign in again.",
         };
     }
 

@@ -18,6 +18,14 @@ const adminNavigation = [
         href: "/admin/albums",
     },
     {
+        label: "Packages",
+        href: "/admin/packages",
+    },
+    {
+        label: "Testimonials",
+        href: "/admin/testimonials",
+    },
+    {
         label: "Messages",
         href: "/admin/messages",
     },
@@ -56,7 +64,7 @@ const AdminSidebar = ({ adminEmail }: AdminSidebarProps) => {
                                 <Link
                                     href={item.href}
                                     className={`block rounded-md px-4 py-2 text-sm transition-all ${isActive
-                                        ? "text-emerald-400 bg-emerald-500/25 border-l-3 border-emerald-500"
+                                        ? "text-primary-light bg-primary/25 border-l-3 border-primary"
                                         : "text-neutral-400 hover:bg-white/10 hover:text-white"
                                         }`}
                                 >

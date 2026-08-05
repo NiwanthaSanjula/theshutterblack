@@ -8,6 +8,77 @@ type SignatureRequestBody = {
 }
 
 const albumsFolderPrefix = "the-shutter-black/albums/";
+const testimonialsFolderPrefix =
+    "the-shutter-black/testimonials/";
+
+function getAlbumIdFromUploadFolder(
+    folder: unknown,
+): string | null {
+    if (
+        typeof folder !== "string" ||
+        !folder.startsWith(albumsFolderPrefix)
+    ) {
+        return null
+    }
+
+    const relativeFolder = folder.slice(
+        albumsFolderPrefix.length,
+    );
+
+    const folderParts = relativeFolder.split("/");
+
+    // Normal album photographs:
+    // the-shutter-black/albums/{albumId}
+    if (
+        folderParts.length === 1 && folderParts[0]
+    ) {
+        return folderParts[0];
+    }
+
+    // Homepage featured image:
+    // the-shutter-black/albums/{albumId}/featured
+    if (
+        folderParts.length === 2 &&
+        folderParts[0] &&
+        folderParts[1] === "featured"
+    ) {
+        return folderParts[0];
+    }
+
+    return null;
+}
+
+function getTestimonialIdFromUploadFolder(
+    folder: unknown,
+): string | null {
+    if (
+        typeof folder !== "string" ||
+        !folder.startsWith(
+            testimonialsFolderPrefix,
+        )
+    ) {
+        return null;
+    }
+
+    const testimonialId = folder.slice(
+        testimonialsFolderPrefix.length,
+    );
+
+    /*
+     * Only allow:
+     * the-shutter-black/testimonials/{testimonialId}
+     *
+     * Reject missing IDs and additional folders.
+     */
+    if (
+        !testimonialId ||
+        testimonialId.includes("/")
+    ) {
+        return null;
+    }
+
+    return testimonialId;
+}
 
 export async function POST(request: Request) {
     const adminSession = await getAdminSession();
@@ -66,56 +137,76 @@ export async function POST(request: Request) {
         );
     }
 
-    const folder = paramsToSign.folder
+    const albumId =
+        getAlbumIdFromUploadFolder(
+            paramsToSign.folder,
+        );
 
-    if (
-        typeof folder !== "string" ||
-        !folder.startsWith(albumsFolderPrefix)
-    ) {
+    const testimonialId =
+        getTestimonialIdFromUploadFolder(
+            paramsToSign.folder,
+        );
+
+    if (!albumId && !testimonialId) {
         return NextResponse.json(
             {
-                error: "Invalid Cloudinary upload folder."
+                error:
+                    "Invalid Cloudinary upload folder.",
             },
             {
-                status: 400
+                status: 400,
             },
         );
     }
 
-    const albumId = folder.slice(
-        albumsFolderPrefix.length,
-    );
+    if (albumId) {
+        const albumExists =
+            await prisma.album.findUnique({
+                where: {
+                    id: albumId,
+                },
 
-    if (!albumId) {
-        return NextResponse.json(
-            {
-                error: "Album ID is missing."
-            },
-            {
-                status: 400
-            },
-        );
+                select: {
+                    id: true,
+                },
+            });
+
+        if (!albumExists) {
+            return NextResponse.json(
+                {
+                    error:
+                        "The selected album does not exist.",
+                },
+                {
+                    status: 404,
+                },
+            );
+        }
     }
 
-    const albumExists = await prisma.album.findUnique({
-        where: {
-            id: albumId,
-        },
+    if (testimonialId) {
+        const testimonialExists =
+            await prisma.testimonial.findUnique({
+                where: {
+                    id: testimonialId,
+                },
 
-        select: {
-            id: true
-        },
-    });
+                select: {
+                    id: true,
+                },
+            });
 
-    if (!albumExists) {
-        return NextResponse.json(
-            {
-                error: "The selected album does not exist."
-            },
-            {
-                status: 404
-            },
-        );
+        if (!testimonialExists) {
+            return NextResponse.json(
+                {
+                    error:
+                        "The selected testimonial does not exist.",
+                },
+                {
+                    status: 404,
+                },
+            );
+        }
     }
 
     const signature = cloudinary.utils.api_sign_request(

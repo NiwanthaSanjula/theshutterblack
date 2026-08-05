@@ -132,7 +132,7 @@ export default function AlbumPhotoUploader({
                             type="button"
                             onClick={() => open()}
                             disabled={isLoading || isSaving}
-                            className="rounded-md bg-emerald-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="rounded-md bg-primary-hover px-5 py-3 text-sm font-medium text-white transition hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             {isLoading
                                 ? "Loading uploader..."

@@ -39,7 +39,7 @@ export default function AlbumWorkspaceTabs({
                         href={tab.href}
                         className={
                             tab.isActive
-                                ? "border-b-2 border-emerald-500 px-1 pb-4 text-sm font-medium text-white"
+                                ? "border-b-2 border-primary px-1 pb-4 text-sm font-medium text-white"
                                 : "border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-neutral-400 transition hover:border-neutral-600 hover:text-white"
                         }
                     >

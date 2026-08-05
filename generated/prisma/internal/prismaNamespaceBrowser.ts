@@ -55,7 +55,9 @@ export const ModelName = {
   Album: 'Album',
   Photo: 'Photo',
   Inquiry: 'Inquiry',
-  SiteSetting: 'SiteSetting'
+  SiteSetting: 'SiteSetting',
+  ServicePackage: 'ServicePackage',
+  Testimonial: 'Testimonial'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -97,6 +99,8 @@ export const AlbumScalarFieldEnum = {
   eventDate: 'eventDate',
   status: 'status',
   isFeatured: 'isFeatured',
+  featuredImageUrl: 'featuredImageUrl',
+  featuredImagePublicId: 'featuredImagePublicId',
   displayOrder: 'displayOrder',
   publishedAt: 'publishedAt',
   createdAt: 'createdAt',
@@ -164,6 +168,42 @@ export const SiteSettingScalarFieldEnum = {
 } as const
 
 export type SiteSettingScalarFieldEnum = (typeof SiteSettingScalarFieldEnum)[keyof typeof SiteSettingScalarFieldEnum]
+
+
+export const ServicePackageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  shortDescription: 'shortDescription',
+  description: 'description',
+  priceLabel: 'priceLabel',
+  durationLabel: 'durationLabel',
+  features: 'features',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ServicePackageScalarFieldEnum = (typeof ServicePackageScalarFieldEnum)[keyof typeof ServicePackageScalarFieldEnum]
+
+
+export const TestimonialScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  message: 'message',
+  rating: 'rating',
+  consentToPublish: 'consentToPublish',
+  imageUrl: 'imageUrl',
+  imagePublicId: 'imagePublicId',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TestimonialScalarFieldEnum = (typeof TestimonialScalarFieldEnum)[keyof typeof TestimonialScalarFieldEnum]
 
 
 export const SortOrder = {

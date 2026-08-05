@@ -9,7 +9,7 @@ const page = () => {
             <div className="mb-8">
                 <Link
                     href="/admin/albums"
-                    className="text-sm text-neutral-500 transition hover:text-emerald-500"
+                    className="text-sm text-neutral-500 transition hover:text-primary"
                 >
                     ← Back to albums
                 </Link>

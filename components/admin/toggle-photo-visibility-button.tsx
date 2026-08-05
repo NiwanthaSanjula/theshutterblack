@@ -55,7 +55,7 @@ export default function TogglePhotoVisibilityButton({
                 className={
                     isVisible
                         ? "text-sm font-medium text-amber-400 transition hover:text-amber-300 disabled:cursor-not-allowed disabled:opacity-50"
-                        : "text-sm font-medium text-emerald-400 transition hover:text-emerald-300 disabled:cursor-not-allowed disabled:opacity-50"
+                        : "text-sm font-medium text-primary-light transition hover:text-primary-lighter disabled:cursor-not-allowed disabled:opacity-50"
                 }
             >
                 {isPending

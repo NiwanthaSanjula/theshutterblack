@@ -388,7 +388,9 @@ export const ModelName = {
   Album: 'Album',
   Photo: 'Photo',
   Inquiry: 'Inquiry',
-  SiteSetting: 'SiteSetting'
+  SiteSetting: 'SiteSetting',
+  ServicePackage: 'ServicePackage',
+  Testimonial: 'Testimonial'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "adminUser" | "album" | "photo" | "inquiry" | "siteSetting"
+    modelProps: "adminUser" | "album" | "photo" | "inquiry" | "siteSetting" | "servicePackage" | "testimonial"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +780,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ServicePackage: {
+      payload: Prisma.$ServicePackagePayload<ExtArgs>
+      fields: Prisma.ServicePackageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ServicePackageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ServicePackageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload>
+        }
+        findFirst: {
+          args: Prisma.ServicePackageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ServicePackageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload>
+        }
+        findMany: {
+          args: Prisma.ServicePackageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload>[]
+        }
+        create: {
+          args: Prisma.ServicePackageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload>
+        }
+        createMany: {
+          args: Prisma.ServicePackageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ServicePackageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload>[]
+        }
+        delete: {
+          args: Prisma.ServicePackageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload>
+        }
+        update: {
+          args: Prisma.ServicePackageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload>
+        }
+        deleteMany: {
+          args: Prisma.ServicePackageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ServicePackageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ServicePackageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload>[]
+        }
+        upsert: {
+          args: Prisma.ServicePackageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ServicePackagePayload>
+        }
+        aggregate: {
+          args: Prisma.ServicePackageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateServicePackage>
+        }
+        groupBy: {
+          args: Prisma.ServicePackageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServicePackageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ServicePackageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ServicePackageCountAggregateOutputType> | number
+        }
+      }
+    }
+    Testimonial: {
+      payload: Prisma.$TestimonialPayload<ExtArgs>
+      fields: Prisma.TestimonialFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TestimonialFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TestimonialFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload>
+        }
+        findFirst: {
+          args: Prisma.TestimonialFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TestimonialFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload>
+        }
+        findMany: {
+          args: Prisma.TestimonialFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload>[]
+        }
+        create: {
+          args: Prisma.TestimonialCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload>
+        }
+        createMany: {
+          args: Prisma.TestimonialCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TestimonialCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload>[]
+        }
+        delete: {
+          args: Prisma.TestimonialDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload>
+        }
+        update: {
+          args: Prisma.TestimonialUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload>
+        }
+        deleteMany: {
+          args: Prisma.TestimonialDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TestimonialUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TestimonialUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload>[]
+        }
+        upsert: {
+          args: Prisma.TestimonialUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TestimonialPayload>
+        }
+        aggregate: {
+          args: Prisma.TestimonialAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTestimonial>
+        }
+        groupBy: {
+          args: Prisma.TestimonialGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TestimonialGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TestimonialCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TestimonialCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -840,6 +990,8 @@ export const AlbumScalarFieldEnum = {
   eventDate: 'eventDate',
   status: 'status',
   isFeatured: 'isFeatured',
+  featuredImageUrl: 'featuredImageUrl',
+  featuredImagePublicId: 'featuredImagePublicId',
   displayOrder: 'displayOrder',
   publishedAt: 'publishedAt',
   createdAt: 'createdAt',
@@ -907,6 +1059,42 @@ export const SiteSettingScalarFieldEnum = {
 } as const
 
 export type SiteSettingScalarFieldEnum = (typeof SiteSettingScalarFieldEnum)[keyof typeof SiteSettingScalarFieldEnum]
+
+
+export const ServicePackageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  shortDescription: 'shortDescription',
+  description: 'description',
+  priceLabel: 'priceLabel',
+  durationLabel: 'durationLabel',
+  features: 'features',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ServicePackageScalarFieldEnum = (typeof ServicePackageScalarFieldEnum)[keyof typeof ServicePackageScalarFieldEnum]
+
+
+export const TestimonialScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  message: 'message',
+  rating: 'rating',
+  consentToPublish: 'consentToPublish',
+  imageUrl: 'imageUrl',
+  imagePublicId: 'imagePublicId',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TestimonialScalarFieldEnum = (typeof TestimonialScalarFieldEnum)[keyof typeof TestimonialScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1027,6 +1215,34 @@ export type EnumInquiryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'InquiryStatus[]'
  */
 export type ListEnumInquiryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InquiryStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PackageStatus'
+ */
+export type EnumPackageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PackageStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PackageStatus[]'
+ */
+export type ListEnumPackageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PackageStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TestimonialStatus'
+ */
+export type EnumTestimonialStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TestimonialStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TestimonialStatus[]'
+ */
+export type ListEnumTestimonialStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TestimonialStatus[]'>
     
 
 
@@ -1158,6 +1374,8 @@ export type GlobalOmitConfig = {
   photo?: Prisma.PhotoOmit
   inquiry?: Prisma.InquiryOmit
   siteSetting?: Prisma.SiteSettingOmit
+  servicePackage?: Prisma.ServicePackageOmit
+  testimonial?: Prisma.TestimonialOmit
 }
 
 /* Types for Logging */

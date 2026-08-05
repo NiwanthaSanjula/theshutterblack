@@ -28,6 +28,17 @@ enum InquiryStatus {
   ARCHIVED
 }
 
+enum PackageStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum TestimonialStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+}
+
 model AdminUser {
   id           String   @id @default(cuid())
   name         String
@@ -41,19 +52,21 @@ model AdminUser {
 }
 
 model Album {
-  id           String      @id @default(cuid())
-  title        String
-  slug         String      @unique
-  description  String?     @db.Text
-  category     String?
-  location     String?
-  eventDate    DateTime?
-  status       AlbumStatus @default(DRAFT)
-  isFeatured   Boolean     @default(false)
-  displayOrder Int         @default(0)
-  publishedAt  DateTime?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id                    String      @id @default(cuid())
+  title                 String
+  slug                  String      @unique
+  description           String?     @db.Text
+  category              String?
+  location              String?
+  eventDate             DateTime?
+  status                AlbumStatus @default(DRAFT)
+  isFeatured            Boolean     @default(false)
+  featuredImageUrl      String?
+  featuredImagePublicId String?
+  displayOrder          Int         @default(0)
+  publishedAt           DateTime?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
 
   photos Photo[]
 
@@ -124,4 +137,44 @@ model SiteSetting {
   updatedAt         DateTime @updatedAt
 
   @@map("site_settings")
+}
+
+model ServicePackage {
+  id               String        @id @default(cuid())
+  name             String        @db.VarChar(160)
+  slug             String        @unique @db.VarChar(180)
+  shortDescription String?       @db.VarChar(320)
+  description      String?       @db.Text
+  priceLabel       String?       @db.VarChar(120)
+  durationLabel    String?       @db.VarChar(120)
+  features         String[]      @default([])
+  status           PackageStatus @default(DRAFT)
+  publishedAt      DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([status])
+  @@index([publishedAt])
+  @@map("service_packages")
+}
+
+model Testimonial {
+  id               String  @id @default(cuid())
+  name             String  @db.VarChar(120)
+  email            String? @db.VarChar(254)
+  message          String  @db.Text
+  rating           Int?
+  consentToPublish Boolean @default(false)
+
+  imageUrl      String?
+  imagePublicId String?
+
+  status      TestimonialStatus @default(PENDING)
+  publishedAt DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([status, createdAt])
+  @@index([publishedAt])
+  @@map("testimonials")
 }

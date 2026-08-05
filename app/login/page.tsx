@@ -35,7 +35,7 @@ export default async function LoginPage() {
                 <div className="mb-6 text-center">
                     <Link
                         href="/"
-                        className="inline-block text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400 transition hover:text-emerald-300"
+                        className="inline-block text-xs font-semibold uppercase tracking-[0.3em] text-primary-light transition hover:text-primary-lighter"
                     >
                         The Shutter Black
                     </Link>
@@ -47,7 +47,7 @@ export default async function LoginPage() {
 
                 <section className="rounded-2xl border border-neutral-800 bg-neutral-900/95 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-8">
                     <div>
-                        <p className="text-sm font-medium text-emerald-400">
+                        <p className="text-sm font-medium text-primary-light">
                             Administrator access
                         </p>
 

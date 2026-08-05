@@ -44,6 +44,8 @@ export type AlbumMinAggregateOutputType = {
   eventDate: Date | null
   status: $Enums.AlbumStatus | null
   isFeatured: boolean | null
+  featuredImageUrl: string | null
+  featuredImagePublicId: string | null
   displayOrder: number | null
   publishedAt: Date | null
   createdAt: Date | null
@@ -60,6 +62,8 @@ export type AlbumMaxAggregateOutputType = {
   eventDate: Date | null
   status: $Enums.AlbumStatus | null
   isFeatured: boolean | null
+  featuredImageUrl: string | null
+  featuredImagePublicId: string | null
   displayOrder: number | null
   publishedAt: Date | null
   createdAt: Date | null
@@ -76,6 +80,8 @@ export type AlbumCountAggregateOutputType = {
   eventDate: number
   status: number
   isFeatured: number
+  featuredImageUrl: number
+  featuredImagePublicId: number
   displayOrder: number
   publishedAt: number
   createdAt: number
@@ -102,6 +108,8 @@ export type AlbumMinAggregateInputType = {
   eventDate?: true
   status?: true
   isFeatured?: true
+  featuredImageUrl?: true
+  featuredImagePublicId?: true
   displayOrder?: true
   publishedAt?: true
   createdAt?: true
@@ -118,6 +126,8 @@ export type AlbumMaxAggregateInputType = {
   eventDate?: true
   status?: true
   isFeatured?: true
+  featuredImageUrl?: true
+  featuredImagePublicId?: true
   displayOrder?: true
   publishedAt?: true
   createdAt?: true
@@ -134,6 +144,8 @@ export type AlbumCountAggregateInputType = {
   eventDate?: true
   status?: true
   isFeatured?: true
+  featuredImageUrl?: true
+  featuredImagePublicId?: true
   displayOrder?: true
   publishedAt?: true
   createdAt?: true
@@ -237,6 +249,8 @@ export type AlbumGroupByOutputType = {
   eventDate: Date | null
   status: $Enums.AlbumStatus
   isFeatured: boolean
+  featuredImageUrl: string | null
+  featuredImagePublicId: string | null
   displayOrder: number
   publishedAt: Date | null
   createdAt: Date
@@ -276,6 +290,8 @@ export type AlbumWhereInput = {
   eventDate?: Prisma.DateTimeNullableFilter<"Album"> | Date | string | null
   status?: Prisma.EnumAlbumStatusFilter<"Album"> | $Enums.AlbumStatus
   isFeatured?: Prisma.BoolFilter<"Album"> | boolean
+  featuredImageUrl?: Prisma.StringNullableFilter<"Album"> | string | null
+  featuredImagePublicId?: Prisma.StringNullableFilter<"Album"> | string | null
   displayOrder?: Prisma.IntFilter<"Album"> | number
   publishedAt?: Prisma.DateTimeNullableFilter<"Album"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Album"> | Date | string
@@ -293,6 +309,8 @@ export type AlbumOrderByWithRelationInput = {
   eventDate?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  featuredImagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   displayOrder?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -313,6 +331,8 @@ export type AlbumWhereUniqueInput = Prisma.AtLeast<{
   eventDate?: Prisma.DateTimeNullableFilter<"Album"> | Date | string | null
   status?: Prisma.EnumAlbumStatusFilter<"Album"> | $Enums.AlbumStatus
   isFeatured?: Prisma.BoolFilter<"Album"> | boolean
+  featuredImageUrl?: Prisma.StringNullableFilter<"Album"> | string | null
+  featuredImagePublicId?: Prisma.StringNullableFilter<"Album"> | string | null
   displayOrder?: Prisma.IntFilter<"Album"> | number
   publishedAt?: Prisma.DateTimeNullableFilter<"Album"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Album"> | Date | string
@@ -330,6 +350,8 @@ export type AlbumOrderByWithAggregationInput = {
   eventDate?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  featuredImagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   displayOrder?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -354,6 +376,8 @@ export type AlbumScalarWhereWithAggregatesInput = {
   eventDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Album"> | Date | string | null
   status?: Prisma.EnumAlbumStatusWithAggregatesFilter<"Album"> | $Enums.AlbumStatus
   isFeatured?: Prisma.BoolWithAggregatesFilter<"Album"> | boolean
+  featuredImageUrl?: Prisma.StringNullableWithAggregatesFilter<"Album"> | string | null
+  featuredImagePublicId?: Prisma.StringNullableWithAggregatesFilter<"Album"> | string | null
   displayOrder?: Prisma.IntWithAggregatesFilter<"Album"> | number
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Album"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Album"> | Date | string
@@ -370,6 +394,8 @@ export type AlbumCreateInput = {
   eventDate?: Date | string | null
   status?: $Enums.AlbumStatus
   isFeatured?: boolean
+  featuredImageUrl?: string | null
+  featuredImagePublicId?: string | null
   displayOrder?: number
   publishedAt?: Date | string | null
   createdAt?: Date | string
@@ -387,6 +413,8 @@ export type AlbumUncheckedCreateInput = {
   eventDate?: Date | string | null
   status?: $Enums.AlbumStatus
   isFeatured?: boolean
+  featuredImageUrl?: string | null
+  featuredImagePublicId?: string | null
   displayOrder?: number
   publishedAt?: Date | string | null
   createdAt?: Date | string
@@ -404,6 +432,8 @@ export type AlbumUpdateInput = {
   eventDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAlbumStatusFieldUpdateOperationsInput | $Enums.AlbumStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -421,6 +451,8 @@ export type AlbumUncheckedUpdateInput = {
   eventDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAlbumStatusFieldUpdateOperationsInput | $Enums.AlbumStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -438,6 +470,8 @@ export type AlbumCreateManyInput = {
   eventDate?: Date | string | null
   status?: $Enums.AlbumStatus
   isFeatured?: boolean
+  featuredImageUrl?: string | null
+  featuredImagePublicId?: string | null
   displayOrder?: number
   publishedAt?: Date | string | null
   createdAt?: Date | string
@@ -454,6 +488,8 @@ export type AlbumUpdateManyMutationInput = {
   eventDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAlbumStatusFieldUpdateOperationsInput | $Enums.AlbumStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -470,6 +506,8 @@ export type AlbumUncheckedUpdateManyInput = {
   eventDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAlbumStatusFieldUpdateOperationsInput | $Enums.AlbumStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -486,6 +524,8 @@ export type AlbumCountOrderByAggregateInput = {
   eventDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrder
+  featuredImagePublicId?: Prisma.SortOrder
   displayOrder?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -506,6 +546,8 @@ export type AlbumMaxOrderByAggregateInput = {
   eventDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrder
+  featuredImagePublicId?: Prisma.SortOrder
   displayOrder?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -522,6 +564,8 @@ export type AlbumMinOrderByAggregateInput = {
   eventDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
+  featuredImageUrl?: Prisma.SortOrder
+  featuredImagePublicId?: Prisma.SortOrder
   displayOrder?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -585,6 +629,8 @@ export type AlbumCreateWithoutPhotosInput = {
   eventDate?: Date | string | null
   status?: $Enums.AlbumStatus
   isFeatured?: boolean
+  featuredImageUrl?: string | null
+  featuredImagePublicId?: string | null
   displayOrder?: number
   publishedAt?: Date | string | null
   createdAt?: Date | string
@@ -601,6 +647,8 @@ export type AlbumUncheckedCreateWithoutPhotosInput = {
   eventDate?: Date | string | null
   status?: $Enums.AlbumStatus
   isFeatured?: boolean
+  featuredImageUrl?: string | null
+  featuredImagePublicId?: string | null
   displayOrder?: number
   publishedAt?: Date | string | null
   createdAt?: Date | string
@@ -633,6 +681,8 @@ export type AlbumUpdateWithoutPhotosInput = {
   eventDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAlbumStatusFieldUpdateOperationsInput | $Enums.AlbumStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -649,6 +699,8 @@ export type AlbumUncheckedUpdateWithoutPhotosInput = {
   eventDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAlbumStatusFieldUpdateOperationsInput | $Enums.AlbumStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featuredImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  featuredImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -696,6 +748,8 @@ export type AlbumSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   eventDate?: boolean
   status?: boolean
   isFeatured?: boolean
+  featuredImageUrl?: boolean
+  featuredImagePublicId?: boolean
   displayOrder?: boolean
   publishedAt?: boolean
   createdAt?: boolean
@@ -714,6 +768,8 @@ export type AlbumSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   eventDate?: boolean
   status?: boolean
   isFeatured?: boolean
+  featuredImageUrl?: boolean
+  featuredImagePublicId?: boolean
   displayOrder?: boolean
   publishedAt?: boolean
   createdAt?: boolean
@@ -730,6 +786,8 @@ export type AlbumSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   eventDate?: boolean
   status?: boolean
   isFeatured?: boolean
+  featuredImageUrl?: boolean
+  featuredImagePublicId?: boolean
   displayOrder?: boolean
   publishedAt?: boolean
   createdAt?: boolean
@@ -746,13 +804,15 @@ export type AlbumSelectScalar = {
   eventDate?: boolean
   status?: boolean
   isFeatured?: boolean
+  featuredImageUrl?: boolean
+  featuredImagePublicId?: boolean
   displayOrder?: boolean
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AlbumOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "description" | "category" | "location" | "eventDate" | "status" | "isFeatured" | "displayOrder" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["album"]>
+export type AlbumOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "description" | "category" | "location" | "eventDate" | "status" | "isFeatured" | "featuredImageUrl" | "featuredImagePublicId" | "displayOrder" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["album"]>
 export type AlbumInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   photos?: boolean | Prisma.Album$photosArgs<ExtArgs>
   _count?: boolean | Prisma.AlbumCountOutputTypeDefaultArgs<ExtArgs>
@@ -775,6 +835,8 @@ export type $AlbumPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     eventDate: Date | null
     status: $Enums.AlbumStatus
     isFeatured: boolean
+    featuredImageUrl: string | null
+    featuredImagePublicId: string | null
     displayOrder: number
     publishedAt: Date | null
     createdAt: Date
@@ -1212,6 +1274,8 @@ export interface AlbumFieldRefs {
   readonly eventDate: Prisma.FieldRef<"Album", 'DateTime'>
   readonly status: Prisma.FieldRef<"Album", 'AlbumStatus'>
   readonly isFeatured: Prisma.FieldRef<"Album", 'Boolean'>
+  readonly featuredImageUrl: Prisma.FieldRef<"Album", 'String'>
+  readonly featuredImagePublicId: Prisma.FieldRef<"Album", 'String'>
   readonly displayOrder: Prisma.FieldRef<"Album", 'Int'>
   readonly publishedAt: Prisma.FieldRef<"Album", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Album", 'DateTime'>

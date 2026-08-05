@@ -32,3 +32,20 @@ export const InquiryStatus = {
 } as const
 
 export type InquiryStatus = (typeof InquiryStatus)[keyof typeof InquiryStatus]
+
+
+export const PackageStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED'
+} as const
+
+export type PackageStatus = (typeof PackageStatus)[keyof typeof PackageStatus]
+
+
+export const TestimonialStatus = {
+  PENDING: 'PENDING',
+  PUBLISHED: 'PUBLISHED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type TestimonialStatus = (typeof TestimonialStatus)[keyof typeof TestimonialStatus]

@@ -20,7 +20,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
             <div className="min-w-0 max-w-6xl mx-auto flex-1">
                 {/**                 
                   <header className="border rounded-lg mt-3 px-8 py-3 border-neutral-700 bg-neutral-950 ">
-                        <p className="text-sm text-emerald-500 tracking-widest uppercase">
+                        <p className="text-sm text-primary tracking-widest uppercase">
                             Admin panel
                         </p>
                  </header>

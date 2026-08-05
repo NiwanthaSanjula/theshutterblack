@@ -47,7 +47,7 @@ const page = async () => {
 
                 <Link
                     href="/admin/albums/new"
-                    className="rounded-md bg-emerald-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-emerald-500"
+                    className="rounded-md bg-primary-hover px-5 py-3 text-sm font-medium text-white transition hover:bg-primary"
                 >
                     Create new album
                 </Link>
@@ -66,7 +66,7 @@ const page = async () => {
 
                         <Link
                             href="/admin/albums/new"
-                            className="mt-5 inline-block text-sm font-medium text-emerald-500"
+                            className="mt-5 inline-block text-sm font-medium text-primary"
                         >
                             + Create your first album
                         </Link>
@@ -148,7 +148,7 @@ const page = async () => {
 
                                             <Link
                                                 href={`/admin/albums/${album.id}`}
-                                                className="text-sm font-medium text-emerald-600 hover:text-emerald-500 transitionborder px-2 py-1 rounded"
+                                                className="text-sm font-medium text-primary-hover hover:text-primary transitionborder px-2 py-1 rounded"
                                             >
                                                 Manage
                                             </Link>

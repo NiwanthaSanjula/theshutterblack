@@ -81,7 +81,7 @@ export default function AlbumForm({
 
 
 
-                <section className="border border-neutral-700 border-l-2 border-l-emerald-500 bg-neutral-800 rounded-lg shadow-lg shadow-black/75 p-6">
+                <section className="border border-neutral-700 border-l-2 border-l-primary bg-neutral-800 rounded-lg shadow-lg shadow-black/75 p-6">
                     <div>
                         <h2 className="text-lg font-semibold">
                             Album information
@@ -109,7 +109,7 @@ export default function AlbumForm({
                                     maxLength={120}
                                     defaultValue={state.values?.title}
                                     placeholder="Example: Tharindu and Sanduni Wedding"
-                                    className="mt-2 w-full rounded-md border border-transparent bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-emerald-500"
+                                    className="mt-2 w-full rounded-md border border-transparent bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-primary"
                                 />
 
                                 <FieldError errors={state.errors?.title} />
@@ -134,7 +134,7 @@ export default function AlbumForm({
                                 maxLength={2000}
                                 defaultValue={state.values?.description}
                                 placeholder="Enter a short description about the album..."
-                                className="mt-2 w-full rounded-md border border-transparent bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-emerald-500"
+                                className="mt-2 w-full rounded-md border border-transparent bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-primary"
                             />
 
                             <div className="flex items-center justify-between">
@@ -162,7 +162,7 @@ export default function AlbumForm({
                                     maxLength={80}
                                     defaultValue={state.values?.category}
                                     placeholder="Wedding, Portrait, Event..."
-                                    className="mt-2 w-full rounded-md border border-transparent  bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-emerald-500"
+                                    className="mt-2 w-full rounded-md border border-transparent  bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-primary"
                                 />
                                 <FieldError errors={state.errors?.category} />
                             </div>
@@ -182,7 +182,7 @@ export default function AlbumForm({
                                     maxLength={120}
                                     defaultValue={state.values?.location}
                                     placeholder="Example: Kandy, Sri Lanka"
-                                    className="mt-2 w-full rounded-md border border-transparent  bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-emerald-500"
+                                    className="mt-2 w-full rounded-md border border-transparent  bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-primary"
 
                                 />
 
@@ -203,7 +203,7 @@ export default function AlbumForm({
                                 name="eventDate"
                                 type="date"
                                 defaultValue={state.values?.eventDate}
-                                className="mt-2 w-full rounded-md border border-transparent  bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-emerald-500"
+                                className="mt-2 w-full rounded-md border border-transparent  bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-primary"
                             />
 
                             <FieldError errors={state.errors?.eventDate} />
@@ -212,7 +212,7 @@ export default function AlbumForm({
                 </section>
 
 
-                <section className="border border-neutral-700 border-l-2 border-l-emerald-500 bg-neutral-800 rounded-lg shadow-lg shadow-black/75 p-6">
+                <section className="border border-neutral-700 border-l-2 border-l-primary bg-neutral-800 rounded-lg shadow-lg shadow-black/75 p-6">
                     <div>
                         <h2 className="text-lg font-semibold">
                             Publishing settings
@@ -236,7 +236,7 @@ export default function AlbumForm({
                                 name="status"
                                 id="status"
                                 defaultValue={state.values?.status ?? "DRAFT"}
-                                className="mt-2 w-full rounded-md border border-neutral-700  bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-emerald-500"
+                                className="mt-2 w-full rounded-md border border-neutral-700  bg-neutral-900 px-3 py-2 text-sm outline-none transition focus:border-primary"
                             >
                                 <option value="DRAFT">
                                     Draft (Not visible publicly)
@@ -264,7 +264,7 @@ export default function AlbumForm({
                                 </span>
 
                                 <span className="block text-xs text-neutral-500">
-                                    Featured albums will later appear on the homepage.
+                                    Save this setting to enable the homepage featured-image uploader.
                                 </span>
                             </span>
                         </label>
@@ -280,7 +280,7 @@ export default function AlbumForm({
                         <button
                             type="submit"
                             disabled={isPending}
-                            className="rounded-md border border-emerald-600 bg-emerald-600 px-5 py-3 text-sm font-medium transition hover:bg-neutral-800"
+                            className="rounded-md border border-primary-hover bg-primary-hover px-5 py-3 text-sm font-medium transition hover:bg-neutral-800"
                         >
                             {isPending
                                 ? isEditing

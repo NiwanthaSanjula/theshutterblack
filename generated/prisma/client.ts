@@ -66,3 +66,13 @@ export type Inquiry = Prisma.InquiryModel
  * 
  */
 export type SiteSetting = Prisma.SiteSettingModel
+/**
+ * Model ServicePackage
+ * 
+ */
+export type ServicePackage = Prisma.ServicePackageModel
+/**
+ * Model Testimonial
+ * 
+ */
+export type Testimonial = Prisma.TestimonialModel

@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 
 import { updateAlbum } from "@/actions/album-actions";
 import AlbumForm from "@/components/admin/album-form";
+
 import { prisma } from "@/lib/prisma";
+import AlbumFeaturedImageUploader from "@/components/admin/album-featured-image-uploader";
 
 type EditAlbumPageProps = {
     params: Promise<{
@@ -29,6 +31,7 @@ export default async function page({
             eventDate: true,
             status: true,
             isFeatured: true,
+            featuredImagePublicId: true,
         },
     });
 
@@ -61,6 +64,28 @@ export default async function page({
                 formAction={updateAlbumWithId}
                 initialValues={initialValues}
             />
+
+            {album.isFeatured ? (
+                <div className="mt-8">
+                    <AlbumFeaturedImageUploader
+                        albumId={album.id}
+                        featuredImagePublicId={
+                            album.featuredImagePublicId
+                        }
+                    />
+                </div>
+            ) : (
+                <div className="mt-8 rounded-lg border border-dashed border-neutral-700 bg-neutral-800/50 p-8 text-center">
+                    <h2 className="text-sm font-medium text-neutral-300">
+                        Featured image is not available
+                    </h2>
+
+                    <p className="mt-2 text-sm text-neutral-500">
+                        Mark this album as featured and save the changes
+                        before uploading its homepage image.
+                    </p>
+                </div>
+            )}
         </div>
     );
 }

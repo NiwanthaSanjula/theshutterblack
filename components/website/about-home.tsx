@@ -91,8 +91,10 @@ export default function AboutHome({
             () => {
                 gsap.set(cover, {
                     scale: 1,
+                    rotation: 0,
                     autoAlpha: 1,
                     transformOrigin: "50% 50%",
+                    force3D: true,
                 });
 
                 gsap.set(photograph, {
@@ -139,8 +141,10 @@ export default function AboutHome({
                     cover,
                     {
                         scale: 5.5,
+                        rotation: 100,
                         duration: 1,
                         ease: "none",
+                        force3D: true,
                     },
                     0,
                 );

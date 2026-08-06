@@ -10,7 +10,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
     const session = await requireAdmin();
 
     return (
-        <div className="flex min-h-screen bg-neutral-900">
+        <div className="flex min-h-screen bg-neutral-900 text-neutral-100">
             <AdminSidebar
                 adminEmail={
                     session.user?.email ?? "CMS Administrator"

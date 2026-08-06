@@ -26,7 +26,7 @@ const heroSlides: HeroSlide[] = [
         mobileImage: "/hero-1-mobile.jpg",
         icon: "/engagement-icon.png",
         eyebrow: "Wedding Photography",
-        title: "Stories of love, preserved forever.",
+        title: "stories of love, preserved forever.",
         description:
             "Natural and timeless wedding photography that captures every meaningful moment, emotion and detail.",
         primaryLabel: "Explore albums",
@@ -36,11 +36,11 @@ const heroSlides: HeroSlide[] = [
     },
     {
         id: "portrait",
-        desktopImage: "/hero-2.2.jpg",
+        desktopImage: "/hero-2.jpg",
         mobileImage: "/hero-2-mobile.png",
         icon: "/portraits-icon.png",
         eyebrow: "Portrait Photography",
-        title: "Portraits that feel completely like you.",
+        title: "portraits that feel completely like you.",
         description:
             "Thoughtful portrait sessions created with beautiful light, natural direction and genuine expression.",
         primaryLabel: "View our work",
@@ -49,12 +49,26 @@ const heroSlides: HeroSlide[] = [
         secondaryHref: "/contact",
     },
     {
-        id: "event",
-        desktopImage: "/albumCover-4.png",
+        id: "engagement",
+        desktopImage: "/hero-3.png",
         mobileImage: "/hero-3-mobile.jpg",
         icon: "/videography-icon.png",
         eyebrow: "Event Photography",
-        title: "Every celebration deserves to be remembered.",
+        title: "every celebration deserves to be remembered.",
+        description:
+            "Professional photography for birthdays, celebrations, corporate occasions and important life events.",
+        primaryLabel: "View event albums",
+        primaryHref: "/albums",
+        secondaryLabel: "Contact photographer",
+        secondaryHref: "/contact",
+    },
+    {
+        id: "event",
+        desktopImage: "/hero-4.jpg",
+        mobileImage: "/hero-3-mobile.jpg",
+        icon: "/videography-icon.png",
+        eyebrow: "Event Photography",
+        title: "stories of love, preserved forever.",
         description:
             "Professional photography for birthdays, celebrations, corporate occasions and important life events.",
         primaryLabel: "View event albums",
@@ -152,21 +166,6 @@ export default function HeroSlider() {
         };
     }, [isPlaying, activeIndex]);
 
-    function showPreviousSlide() {
-        setActiveIndex((currentIndex) =>
-            currentIndex === 0
-                ? heroSlides.length - 1
-                : currentIndex - 1,
-        );
-    }
-
-    function showNextSlide() {
-        setActiveIndex(
-            (currentIndex) =>
-                (currentIndex + 1) % heroSlides.length,
-        );
-    }
-
     return (
         <section
             aria-label="Photography introduction"
@@ -200,19 +199,16 @@ export default function HeroSlider() {
             </div>
 
             {/* Readability overlays */}
-            {/* Warm cinematic overlay */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(22,13,8,0.62)_0%,rgba(11,7,4,0.65)_50%,rgba(0,0,0,0.08)_100%)]" />
-
-
+            <div className="absolute inset-0 z-10 bg-linear-to-t from-black via-black/75 to-transparent" />
 
             {/* Matching slide content */}
             <div className="relative z-10 mx-auto flex min-h-[calc(100svh-5rem)] max-w-7xl items-center justify-center px-4 lg:px-8">
                 <div
                     key={`${activeSlide.id}-content`}
                     ref={contentRef}
-                    className="max-w-6xl text-center flex flex-col items-center justify-center mt-40"
+                    className="max-w-4xl flex flex-col mt-20 items-center justify-center text-center"
                 >
-                    <div className="mb-6 flex justify-center">
+                    <div className="mb-6 flex">
                         <Image
                             src={activeSlide.icon}
                             width={64}
@@ -224,25 +220,25 @@ export default function HeroSlider() {
                     </div>
 
                     <p
-                        className="text-xs  font-medium uppercase tracking-[0.28em] text-primary/75 sm:text-sm"
+                        className="text-xs font-medium uppercase tracking-[0.28em] text-primary/75 sm:text-sm"
                     >
                         {activeSlide.eyebrow}
                     </p>
 
                     <h1
-                        className="mt-5 text-xl font-semibold font-cinzel leading-[1.07] tracking-wider text-white sm:text-3xl md:text-4xl lg:text-6xl"
+                        className="mt-6 text-xl font-cinzel tracking-wider text-white sm:text-3xl md:text-4xl lg:text-6xl"
                     >
                         {activeSlide.title}
                     </h1>
 
                     <p
-                        className="mt-6 max-w-2xl text-base leading-7 text-white sm:text-lg sm:leading-8"
+                        className="mt-5 max-w-2xl text-base leading-7 text-white sm:text-lg sm:leading-8"
                     >
                         {activeSlide.description}
                     </p>
 
                     <div
-                        className="mt-9 font-cinzel flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+                        className="mt-6 font-cinzel flex flex-col gap-3 sm:flex-row sm:flex-wrap"
                     >
                         <Link
                             href={activeSlide.primaryHref}

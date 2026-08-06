@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Cinzel } from "next/font/google";
+import { Geist, Geist_Mono, Cinzel, Roboto_Condensed, Edu_VIC_WA_NT_Hand } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,6 +14,15 @@ const geistMono = Geist_Mono({
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
+  subsets: ["latin"],
+});
+
+const robotoCondensed = Roboto_Condensed({
+  variable: "--font-roboto-condensed",
+  subsets: ["latin"],
+});
+const eduvicHand = Edu_VIC_WA_NT_Hand({
+  variable: "--font-eduvic-hand",
   subsets: ["latin"],
 });
 
@@ -33,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} ${robotoCondensed.variable} ${eduvicHand.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}

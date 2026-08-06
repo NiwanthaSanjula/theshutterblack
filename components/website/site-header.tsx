@@ -38,12 +38,12 @@ export default function SiteHeader() {
     }
 
     return (
-        <header className="fixed inset-0 z-50 md:mt-2 ">
-            <div className="mx-auto flex py-2.5 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 md:rounded-full border-b md:border border-neutral-500 bg-white/15 backdrop-blur-sm">
+        <header className="fixed inset-x-0 top-0 z-50 md:mt-2 ">
+            <div className="mx-auto flex py-3 max-w-2xl items-center justify-between px-4 sm:px-6 lg:px-8 md:rounded-full border-t-2  border-neutral-500/50 bg-black/40 backdrop-blur-sm">
                 <Link
                     href='/'
                     onClick={() => setIsMenuOpen(false)}
-                    className="group flex min-w-0 items-center"
+                    className="group flex min-w-0 items-center  md:mr-15"
                 >
                     {/* Render logo with proper Next.js Image properties */}
                     <div className="relative h-10 flex items-center">

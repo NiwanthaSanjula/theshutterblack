@@ -15,8 +15,6 @@ export default function Websitelayout({
             <main className="flex-1">
                 {children}
             </main>
-
-            <SiteFooter />
         </div>
     )
 }

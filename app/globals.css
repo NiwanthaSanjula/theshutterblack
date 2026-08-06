@@ -13,6 +13,8 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-cinzel: var(--font-cinzel), serif;
+  --font-roboto-condensed: var(--font-roboto-condensed), sans-serif;
+  --font-eduvic-hand: var(--font-eduvic-hand), sans-serif;
   --color-primary: var(--primary-color);
   --color-primary-hover: color-mix(in srgb, var(--primary-color) 85%, black);
   --color-primary-light: color-mix(in srgb, var(--primary-color) 85%, white);
@@ -23,6 +25,14 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -34,4 +44,5 @@ body {
     Arial,
     Helvetica,
     sans-serif;
+
 }

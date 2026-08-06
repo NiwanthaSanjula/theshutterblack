@@ -1,25 +1,83 @@
+import FeaturedAlbums, { FeaturedAlbumItem } from '@/components/website/featured-section'
 import HeroSlider from '@/components/website/hero-slider'
+import Services from '@/components/website/services';
+import { prisma } from '@/lib/prisma'
 
-export default function HomePage() {
+export default async function HomePage() {
+
+    const featuredAlbum =
+        await prisma.album.findMany({
+            where: {
+                status: "PUBLISHED",
+                isFeatured: true,
+
+                featuredImagePublicId: {
+                    not: null,
+                },
+            },
+
+            orderBy: [
+                {
+                    displayOrder: "asc"
+                },
+                {
+                    publishedAt: "desc"
+                },
+                {
+                    createdAt: "desc"
+                },
+            ],
+            take: 7,
+            select: {
+                id: true,
+                title: true,
+                slug: true,
+                description: true,
+                category: true,
+                location: true,
+                eventDate: true,
+                featuredImagePublicId: true,
+                photos: {
+                    where: {
+                        isVisible: true,
+                        isCover: true,
+                    },
+
+                    take: 1,
+
+                    select: {
+                        publicid: true,
+                    },
+                },
+            },
+        });
+
+    const preparedFeaturedAlbum: FeaturedAlbumItem[] =
+        featuredAlbum.flatMap((album) => {
+            if (!album.featuredImagePublicId) {
+                return [];
+            }
+
+            return [
+                {
+                    id: album.id,
+                    title: album.title,
+                    slug: album.slug,
+                    description: album.description,
+                    category: album.category,
+                    location: album.location,
+                    eventDate: album.eventDate?.toISOString() ?? null,
+                    featuredImagePublicId: album.featuredImagePublicId,
+                    coverImagePublicId: album.photos[0]?.publicid ?? album.featuredImagePublicId,
+                },
+            ];
+        });
+
     return (
         <div>
             <HeroSlider />
-
-            <section className="border-t border-black/10 bg-white">
-                <div className="mx-auto max-w-7xl px-6 py-20">
-                    <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">
-                        Featured work
-                    </p>
-
-                    <h2 className="mt-3 text-3xl font-semibold">
-                        Featured albums will appear here
-                    </h2>
-
-                    <p className="mt-4 text-neutral-600">
-                        Later, these albums will be loaded from PostgreSQL.
-                    </p>
-                </div>
-            </section>
+            <FeaturedAlbums albums={preparedFeaturedAlbum} />
+            <Services />
 
         </div>
     )

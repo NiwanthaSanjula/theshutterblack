@@ -264,6 +264,7 @@ export async function createAlbum(
     revalidatePath("/admin");
     revalidatePath("/admin/albums");
     revalidatePath("/albums");
+    revalidatePath("/");
 
     redirect("/admin/albums");
 }

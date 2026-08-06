@@ -48,22 +48,22 @@ const services: ServiceItem[] = [
 function getDesktopLayout(index: number) {
     switch (index) {
         case 0:
-            return "xl:col-span-5 xl:row-span-2";
+            return "xl:col-span-8 xl:row-span-2";
 
         case 1:
-            return "xl:col-span-3 xl:row-span-1";
+            return "xl:col-span-8 xl:row-span-1";
 
         case 2:
-            return "xl:col-span-4 xl:row-span-1";
+            return "xl:col-span-8 xl:row-span-1";
 
         case 3:
-            return "xl:col-span-2 xl:row-span-1";
+            return "xl:col-span-5 xl:row-span-1";
 
         case 4:
-            return "xl:col-span-2 xl:row-span-1";
+            return "xl:col-span-5 xl:row-span-1";
 
         case 5:
-            return "xl:col-span-3 xl:row-span-1";
+            return "xl:col-span-6 xl:row-span-1";
 
         default:
             return "";
@@ -78,34 +78,9 @@ export default function Services() {
                 px-4 py-20 text-white
                 sm:px-6 sm:py-24
                 lg:px-8
-                xl:h-screen xl:px-10 xl:pb-8 xl:pt-28
-            "
+                xl:min-h-screen xl:h-auto xl:px-10 xl:pb-16 xl:pt-28
+                max-w-7xl mx-auto"
         >
-            {/* Wireframe background image */}
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0"
-            >
-                <Image
-                    src="/services-grid-background.png"
-                    alt=""
-                    fill
-                    sizes="100vw"
-                    className="object-cover object-bottom opacity-45 mix-blend-screen"
-                />
-            </div>
-
-            {/* Background shading */}
-            <div
-                aria-hidden="true"
-                className="
-                    pointer-events-none absolute inset-0
-                    bg-linear-to-b
-                    from-neutral-950
-                    via-neutral-950/85
-                    to-neutral-950/60
-                "
-            />
 
             <div
                 aria-hidden="true"
@@ -126,7 +101,7 @@ export default function Services() {
                 <header
                     className="
                         flex shrink-0 flex-col gap-8
-                        xl:flex-row
+                        xl:flex-row-reverse
                         xl:items-end
                         xl:justify-between
                     "
@@ -183,14 +158,14 @@ export default function Services() {
                 */}
                 <div
                     className="
-                        mt-12 grid gap-4
-                        sm:grid-cols-2 sm:gap-5
+                        mt-12 grid gap-3
+                        sm:grid-cols-2 sm:gap-4
                         xl:mt-10
-                        xl:min-h-0
+                        xl:min-h-145
                         xl:flex-1
-                        xl:grid-cols-12
+                        xl:grid-cols-24
                         xl:grid-rows-2
-                        xl:gap-4
+                        xl:gap-3
                     "
                 >
                     {services.map((service, index) => {
@@ -201,15 +176,15 @@ export default function Services() {
                             <article
                                 key={service.title}
                                 className={`
-                                    group relative flex min-h-60
-                                    overflow-hidden rounded-3xl
+                                    group relative flex min-h-68
+                                    overflow-hidden rounded-xl
                                     border border-white/10
-                                    bg-neutral-500
+                                    bg-neutral-950
+                                    p-6 sm:p-7
                                     backdrop-blur-sm
                                     transition duration-300
                                     hover:border-primary/50
                                     hover:bg-neutral-900/75
-                                    sm:p-7
                                     xl:h-full
                                     xl:min-h-0
                                     ${getDesktopLayout(index)}
@@ -245,9 +220,9 @@ export default function Services() {
                                 <span
                                     aria-hidden="true"
                                     className="
-                                        absolute right-5 top-4
+                                        absolute right-6 top-6
                                         font-cinzel text-4xl
-                                        text-white/4
+                                        text-white/5
                                         sm:text-5xl
                                     "
                                 >
@@ -257,16 +232,16 @@ export default function Services() {
                                     )}
                                 </span>
 
-                                <div className="relative flex w-full flex-col justify-between">
+                                <div className="relative z-10 flex flex-1 flex-col justify-end transition-transform duration-300 group-hover:-translate-y-1">
                                     {/* Text */}
-                                    <div className="mt-auto px-4 py-4 lg:px-0 lg:py-0">
+                                    <div>
                                         <h3
                                             className={`
                                                 font-cinzel leading-snug
                                                 text-white
                                                 ${isMainService
-                                                    ? "text-2xl sm:text-3xl xl:text-4xl"
-                                                    : "text-xl xl:text-2xl"
+                                                    ? "text-2xl sm:text-3xl xl:text-3xl"
+                                                    : "text-lg xl:text-xl"
                                                 }
                                             `}
                                         >
@@ -275,10 +250,10 @@ export default function Services() {
 
                                         <p
                                             className={`
-                                                mt-3 text-white/55
+                                                mt-2 text-white/70
                                                 ${isMainService
                                                     ? "max-w-xl text-sm leading-7 sm:text-base"
-                                                    : "line-clamp-3 text-sm leading-6"
+                                                    : "line-clamp-3 text-xs leading-5 xl:text-sm xl:leading-6"
                                                 }
                                             `}
                                         >

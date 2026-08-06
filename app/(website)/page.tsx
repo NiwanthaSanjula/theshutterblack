@@ -1,3 +1,4 @@
+import AboutHome from '@/components/website/about-home';
 import FeaturedAlbums, { FeaturedAlbumItem } from '@/components/website/featured-section'
 import HeroSlider from '@/components/website/hero-slider'
 import Services from '@/components/website/services';
@@ -78,6 +79,7 @@ export default async function HomePage() {
             <HeroSlider />
             <FeaturedAlbums albums={preparedFeaturedAlbum} />
             <Services />
+            <AboutHome />
 
         </div>
     )

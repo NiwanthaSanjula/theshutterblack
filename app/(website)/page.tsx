@@ -4,6 +4,10 @@ import HeroSlider from '@/components/website/hero-slider'
 import PackagesHome from '@/components/website/packages-home';
 import Services from '@/components/website/services';
 import { prisma } from '@/lib/prisma'
+import TestimonialsHome, {
+    TestimonialHomeItem,
+} from '@/components/website/testimonials-home';
+import SiteFooter from '@/components/website/site-footer';
 
 function getStartingPrice(priceLabel: string | null) {
     if (!priceLabel) {
@@ -123,6 +127,42 @@ export default async function HomePage() {
     const shouldShowPackages =
         publishedPackagesResult.length >= 3;
 
+    const testimonials = await prisma.testimonial.findMany({
+        where: {
+            status: "PUBLISHED",
+            consentToPublish: true,
+            imagePublicId: {
+                not: null,
+            },
+        },
+
+        orderBy: [
+            {
+                publishedAt: "desc",
+            },
+            {
+                createdAt: "desc",
+            },
+        ],
+
+        take: 6,
+
+        select: {
+            id: true,
+            name: true,
+            message: true,
+            rating: true,
+            imagePublicId: true,
+        },
+    });
+    const preparedTestimonials: TestimonialHomeItem[] =
+        testimonials.filter(
+            (
+                testimonial,
+            ): testimonial is TestimonialHomeItem =>
+                testimonial.imagePublicId !== null,
+        );
+
 
     return (
         <div>
@@ -135,6 +175,10 @@ export default async function HomePage() {
                     packages={publishedPackages}
                 />
             )}
+            {preparedTestimonials.length > 0 && (
+                <TestimonialsHome testimonials={preparedTestimonials} />
+            )}
+            <SiteFooter />
 
         </div>
     )

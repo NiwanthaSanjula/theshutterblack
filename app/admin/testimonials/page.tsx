@@ -163,7 +163,7 @@ export default async function AdminTestimonialsPage() {
                                                             className={`rounded-full border px-3 py-1 text-xs font-medium ${statusStyles[
                                                                 testimonial
                                                                     .status
-                                                                ]
+                                                            ]
                                                                 }`}
                                                         >
                                                             {
@@ -204,8 +204,8 @@ export default async function AdminTestimonialsPage() {
 
                                                             <p
                                                                 className={`mt-1 text-sm font-medium ${testimonial.consentToPublish
-                                                                        ? "text-primary-light"
-                                                                        : "text-red-400"
+                                                                    ? "text-primary-light"
+                                                                    : "text-red-400"
                                                                     }`}
                                                             >
                                                                 {testimonial.consentToPublish

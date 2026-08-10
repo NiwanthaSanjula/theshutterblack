@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 
 import AlbumCard from "@/components/website/album-card"
+
+import AlbumFilters from "@/components/website/album-filters";
 import { prisma } from "@/lib/prisma"
 
 
@@ -8,11 +10,80 @@ export const metadata: Metadata = {
     title: "Albums",
     description: "Explore photography albums from The Shutter Black."
 }
+type AlbumsPageProps = {
+    searchParams: Promise<{
+        category?: string;
+        search?: string;
+    }>;
+};
 
-const page = async () => {
+const page = async ({ searchParams }: AlbumsPageProps) => {
+
+    const params = await searchParams;
+
+    const category = params.category?.trim() || "";
+    const search = params.search?.trim() || "";
+
+    const categoryResults = await prisma.album.findMany({
+        where: {
+            status: "PUBLISHED",
+            category: {
+                not: null,
+            },
+        },
+        distinct: ["category"],
+        select: {
+            category: true,
+        },
+        orderBy: {
+            category: "asc",
+        },
+    });
+
+    const categories = categoryResults
+        .map((item) => item.category)
+        .filter(
+            (category): category is string =>
+                Boolean(category),
+        );
+
     const albums = await prisma.album.findMany({
         where: {
             status: "PUBLISHED",
+
+            ...(category && category !== "all"
+                ? {
+                    category: {
+                        equals: category,
+                        mode: "insensitive",
+                    },
+                }
+                : {}),
+
+            ...(search
+                ? {
+                    OR: [
+                        {
+                            title: {
+                                contains: search,
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            location: {
+                                contains: search,
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            category: {
+                                contains: search,
+                                mode: "insensitive",
+                            },
+                        },
+                    ],
+                }
+                : {}),
         },
 
         orderBy: [
@@ -83,19 +154,27 @@ const page = async () => {
                 captured through photography.
             </p>
 
+            <AlbumFilters categories={categories} />
+
+
+
             {albums.length === 0 ? (
                 <div className="mt-12 rounded-lg border border-dashed border-neutral-300 bg-white p-12 text-center">
                     <h2 className="text-lg font-medium">
-                        No published albums yet
+                        {category || search
+                            ? "No albums found"
+                            : "No published albums yet"}
                     </h2>
 
                     <p className="mt-2 text-neutral-500">
-                        Published photography collections will appear here.
+                        {category || search
+                            ? "Try another search or choose a different category."
+                            : "Published photography collections will appear here."}
                     </p>
                 </div>
             ) : (
                 <>
-                    <p className="mt-10 text-sm text-neutral-500">
+                    <p className="mt-8 text-sm text-neutral-500">
                         {albums.length}{" "}
                         {albums.length === 1 ? "album" : "albums"}
                     </p>

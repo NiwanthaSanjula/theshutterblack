@@ -39,7 +39,7 @@ export default function SiteHeader() {
 
     return (
         <header className="fixed inset-x-0 top-0 z-50 md:mt-2 ">
-            <div className="mx-auto flex py-3 max-w-2xl items-center justify-between px-4 sm:px-6 lg:px-8 md:rounded-full border-t-2  border-neutral-200/35 bg-white/20 backdrop-blur-sm">
+            <div className="mx-auto flex py-3 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 md:rounded-full border-t-2  border-neutral-200/35 bg-white/20 backdrop-blur-sm">
                 <Link
                     href='/'
                     onClick={() => setIsMenuOpen(false)}

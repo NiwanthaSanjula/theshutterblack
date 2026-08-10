@@ -18,10 +18,7 @@ export default function AlbumFilters({
 
     const [search, setSearch] = useState(currentSearch);
 
-    const updateFilters = (
-        nextCategory: string,
-        nextSearch: string,
-    ) => {
+    const updateFilters = (nextCategory: string, nextSearch: string) => {
         const params = new URLSearchParams();
 
         if (nextCategory && nextCategory !== "all") {
@@ -31,49 +28,39 @@ export default function AlbumFilters({
         if (nextSearch.trim()) {
             params.set("search", nextSearch.trim());
         }
+        // no `page` set here — always resets to page 1 on filter change
 
         const query = params.toString();
 
-        router.push(
-            query ? `/albums?${query}` : "/albums",
-        );
+        router.push(query ? `/albums?${query}` : "/albums");
     };
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        updateFilters(
-            currentCategory,
-            search,
-        );
+        updateFilters(currentCategory, search);
     };
 
     return (
-        <div className="mt-12 space-y-6">
+        <div className="space-y-6">
             {/* Search */}
-            <form
-                onSubmit={handleSubmit}
-                className="relative max-w-xl"
-            >
+            <form onSubmit={handleSubmit} className="relative max-w-xl">
                 <input
                     type="search"
                     value={search}
-                    onChange={(event) =>
-                        setSearch(event.target.value)
-                    }
+                    maxLength={100}
+                    onChange={(event) => setSearch(event.target.value)}
                     placeholder="Search albums, locations..."
                     className="
                         w-full rounded-full
-                        border border-neutral-200
                         bg-white
                         px-5 py-3.5 pr-14
-                        text-sm text-neutral-900
+                        text-sm text-black
                         outline-none
                         transition
-                        placeholder:text-neutral-400
-                        focus:border-neutral-500
+                        placeholder
+                        focus:border-primary/60
                         focus:ring-2
-                        focus:ring-neutral-200
+                        focus:ring-primary/20
                     "
                 />
 
@@ -86,10 +73,10 @@ export default function AlbumFilters({
                         -translate-y-1/2
                         items-center justify-center
                         rounded-full
-                        bg-neutral-900
-                        text-white
+                        bg-primary
+                        text-neutral-950
                         transition
-                        hover:bg-neutral-700
+                        hover:bg-primary/85
                     "
                 >
                     →
@@ -100,9 +87,7 @@ export default function AlbumFilters({
             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
                 <button
                     type="button"
-                    onClick={() =>
-                        updateFilters("all", search)
-                    }
+                    onClick={() => updateFilters("all", search)}
                     className={`
                         shrink-0 rounded-full
                         px-5 py-2.5
@@ -110,8 +95,8 @@ export default function AlbumFilters({
                         uppercase tracking-[0.15em]
                         transition
                         ${currentCategory === "all"
-                            ? "bg-neutral-900 text-white"
-                            : "border border-neutral-200 text-neutral-500 hover:border-neutral-400 hover:text-neutral-900"
+                            ? "bg-primary text-neutral-950"
+                            : "border border-white/15 text-white/50 hover:border-white/30 hover:text-white"
                         }
                     `}
                 >
@@ -122,12 +107,7 @@ export default function AlbumFilters({
                     <button
                         key={category}
                         type="button"
-                        onClick={() =>
-                            updateFilters(
-                                category,
-                                search,
-                            )
-                        }
+                        onClick={() => updateFilters(category, search)}
                         className={`
                             shrink-0 rounded-full
                             px-5 py-2.5
@@ -135,8 +115,8 @@ export default function AlbumFilters({
                             uppercase tracking-[0.15em]
                             transition
                             ${currentCategory === category
-                                ? "bg-neutral-900 text-white"
-                                : "border border-neutral-200 text-neutral-500 hover:border-neutral-400 hover:text-neutral-900"
+                                ? "bg-primary text-neutral-950"
+                                : "border border-white/15 text-white/50 hover:border-white/30 hover:text-white"
                             }
                         `}
                     >

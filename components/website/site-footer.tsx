@@ -15,7 +15,7 @@ export default function SiteFooter() {
                     text-[clamp(5rem,16vw,15rem)]
                     leading-none
                     tracking-[-0.04em]
-                    text-white/[0.025]
+                    text-white/2.5
                 "
             >
                 SHUTTER

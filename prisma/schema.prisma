@@ -119,22 +119,24 @@ model Inquiry {
 }
 
 model SiteSetting {
-  id                String   @id @default("main")
-  businessName      String   @default("The Shutter Black")
-  photographerName  String?
-  biography         String?  @db.Text
-  email             String?
-  phone             String?
-  whatsapp          String?
-  address           String?  @db.Text
-  instagramUrl      String?
-  facebookUrl       String?
-  logoUrl           String?
-  logoPublicId      String?
-  heroImageUrl      String?
-  heroImagePublicId String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                 String   @id @default("main")
+  businessName       String   @default("The Shutter Black")
+  photographerName   String?
+  biography          String?  @db.Text
+  email              String?
+  phone              String?
+  whatsapp           String?
+  address            String?  @db.Text
+  instagramUrl       String?
+  facebookUrl        String?
+  logoUrl            String?
+  logoPublicId       String?
+  heroImageUrl       String?
+  heroImagePublicId  String?
+  aboutImageUrl      String?
+  aboutImagePublicId String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   @@map("site_settings")
 }

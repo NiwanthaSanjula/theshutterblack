@@ -1,20 +1,17 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import CldImage from "@/components/common/cloudinary-image";
 import DeleteAlbumButton from "@/components/admin/delete-album-button";
 
 const dateFormatter = new Intl.DateTimeFormat("en-LK", {
     year: "numeric",
     month: "short",
-    day: "numeric"
+    day: "numeric",
 });
 
-const page = async () => {
-
+export default async function AdminAlbumsPage() {
     const albums = await prisma.album.findMany({
-        orderBy: {
-            createdAt: "desc"
-        },
-
+        orderBy: { createdAt: "desc" },
         select: {
             id: true,
             title: true,
@@ -23,163 +20,151 @@ const page = async () => {
             status: true,
             isFeatured: true,
             createdAt: true,
-
             _count: {
-                select: {
-                    photos: true,
-                },
+                select: { photos: true },
+            },
+            photos: {
+                where: { isVisible: true },
+                orderBy: [
+                    { isCover: "desc" },
+                    { displayOrder: "asc" },
+                    { createdAt: "asc" },
+                ],
+                take: 1,
+                select: { publicid: true, altText: true },
             },
         },
     });
 
     return (
         <div>
-            <div className="flex items-center justify-between gap-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <p className="text-sm text-neutral-500">Content management</p>
-                    <h1 className="mt-1 text-3xl font-semibold">Albums</h1>
-
+                    <h1 className="mt-1 text-2xl font-semibold sm:text-3xl">Albums</h1>
                     <p className="mt-1 text-sm text-neutral-500">
-                        {albums.length}{" "}
-                        {albums.length === 1 ? "album" : "albums"} in total
+                        {albums.length} {albums.length === 1 ? "album" : "albums"} in total
                     </p>
                 </div>
 
                 <Link
                     href="/admin/albums/new"
-                    className="rounded-md bg-primary-hover px-5 py-3 text-sm font-medium text-white transition hover:bg-primary"
+                    className="inline-block rounded-md bg-primary-hover px-5 py-3 text-center text-sm font-medium text-white transition hover:bg-primary"
                 >
                     Create new album
                 </Link>
             </div>
 
-            <div className="mt-8 rounded-lg border border-neutral-700 bg-neutral-800/50">
-                <div className="border-b border-black/10 px-6 py-4">
-                    <h2 className="font-medium">All albums</h2>
+            {albums.length === 0 ? (
+                <div className="mt-8 rounded-lg border border-neutral-800 bg-neutral-950 p-12 text-center">
+                    <p className="text-neutral-500">
+                        No albums have been created yet.
+                    </p>
+                    <Link
+                        href="/admin/albums/new"
+                        className="mt-5 inline-block text-sm font-medium text-primary"
+                    >
+                        + Create your first album
+                    </Link>
                 </div>
+            ) : (
+                <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                    {albums.map((album) => {
+                        const cover = album.photos[0];
 
-                {albums.length === 0 ? (
-                    <div className="p-12 text-center">
-                        <p className="text-neutral-500">
-                            No albums have been created yet.
-                        </p>
+                        return (
+                            <article
+                                key={album.id}
+                                className="overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950"
+                            >
+                                <div className="relative aspect-video bg-neutral-900">
+                                    {cover ? (
+                                        <CldImage
+                                            src={cover.publicid}
+                                            alt={cover.altText ?? `${album.title} cover`}
+                                            fill
+                                            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                                            className="object-cover"
+                                        />
+                                    ) : (
+                                        <div className="flex h-full items-center justify-center">
+                                            <p className="text-xs text-neutral-600">
+                                                No cover photo
+                                            </p>
+                                        </div>
+                                    )}
 
-                        <Link
-                            href="/admin/albums/new"
-                            className="mt-5 inline-block text-sm font-medium text-primary"
-                        >
-                            + Create your first album
-                        </Link>
-                    </div>
-                ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full min-w-[850px] text-left">
-                            <thead className="border-b border-neutral-700 text-sm text-neutral-500">
-                                <tr>
-                                    <th className="px-6 py-4 font-medium">
-                                        Album
-                                    </th>
-                                    <th className="px-6 py-4 font-medium">
-                                        Category
-                                    </th>
-                                    <th className="px-6 py-4 font-medium">
-                                        Photos
-                                    </th>
-                                    <th className="px-6 py-4 font-medium">
-                                        Status
-                                    </th>
-                                    <th className="px-6 py-4 font-medium">
-                                        Created
-                                    </th>
-                                    <th className="px-6 py-4 font-medium">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
+                                    <span
+                                        className={`
+                                            absolute left-3 top-3
+                                            rounded-full px-3 py-1
+                                            text-xs font-medium
+                                            backdrop-blur
+                                            ${album.status === "PUBLISHED"
+                                                ? "border border-green-500/50 bg-green-500/10 text-green-500"
+                                                : "border border-white/15 bg-black/40 text-neutral-200"
+                                            }
+                                        `}
+                                    >
+                                        {album.status === "PUBLISHED" ? "Published" : "Draft"}
+                                    </span>
 
-                            <tbody>
-                                {albums.map((album) => (
-                                    <tr key={album.id}>
-                                        <td className="px-6 py-5">
-                                            <div className="flex items-start gap-3">
-                                                <div>
-                                                    <p className="font-medium">
-                                                        {album.title}
-                                                    </p>
+                                    {album.isFeatured && (
+                                        <span className="absolute right-3 top-3 rounded-full border border-amber-500/50 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-400 backdrop-blur">
+                                            Featured
+                                        </span>
+                                    )}
+                                </div>
 
-                                                    <p className="mt-1 text-xs text-neutral-500">
-                                                        /albums/{album.slug}
-                                                    </p>
+                                <div className="p-5">
+                                    <p className="truncate font-medium text-white">
+                                        {album.title}
+                                    </p>
+                                    <p className="mt-1 truncate text-xs text-neutral-500">
+                                        /albums/{album.slug}
+                                    </p>
 
-                                                    {album.isFeatured && (
-                                                        <span className="mt-2 inline-block rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800">
-                                                            Featured
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </td>
+                                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-neutral-400">
+                                        <span>{album.category || "Uncategorized"}</span>
+                                        <span>
+                                            {album._count.photos}{" "}
+                                            {album._count.photos === 1 ? "photo" : "photos"}
+                                        </span>
+                                        <span>{dateFormatter.format(album.createdAt)}</span>
+                                    </div>
 
-                                        <td className="px-6 py-5 text-sm text-neutral-400">
-                                            {album.category || "-"}
-                                        </td>
+                                    <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-white/10 pt-4">
+                                        <Link
+                                            href={`/admin/albums/${album.id}`}
+                                            className="text-sm font-medium text-primary-hover transition hover:text-primary"
+                                        >
+                                            Manage
+                                        </Link>
 
-                                        <td className="px-6 py-5 text-sm text-neutral-400">
-                                            {album._count.photos}
-                                        </td>
-
-                                        <td className="px-6 py-5">
-                                            <span
-                                                className={
-                                                    album.status === "PUBLISHED"
-                                                        ? "rounded-full bg-green-500/10 border border-green-500/50 px-3 py-1 text-xs font-medium text-green-500"
-                                                        : "rounded-full bg-neutral-600 px-3 py-1 text-xs font-medium text-neutral-100"
-                                                }
-                                            >
-                                                {album.status === "PUBLISHED" ? "Published" : "Draft"}
-                                            </span>
-                                        </td>
-
-                                        <td className="px-6 py-5 text-sm text-neutral-400">
-                                            {dateFormatter.format(album.createdAt)}
-                                        </td>
-
-                                        <td className="flex gap-3 px-6 py-5 text-right">
-
+                                        {album.status === "PUBLISHED" && (
                                             <Link
-                                                href={`/admin/albums/${album.id}`}
-                                                className="text-sm font-medium text-primary-hover hover:text-primary transitionborder px-2 py-1 rounded"
+                                                href={`/albums/${album.slug}`}
+                                                target="_blank"
+                                                className="text-sm font-medium text-neutral-400 transition hover:text-neutral-200"
                                             >
-                                                Manage
+                                                View
                                             </Link>
+                                        )}
 
-                                            {album.status === "PUBLISHED" && (
-                                                <Link
-                                                    href={`/albums/${album.slug}`}
-                                                    target="_blank"
-                                                    className="text-sm font-medium text-neutral-400 transition hover:text-neutral-200 px-2 py-1 rounded"
-                                                >
-                                                    View
-                                                </Link>
-                                            )}
-
+                                        <div className="ml-auto">
                                             <DeleteAlbumButton
                                                 albumId={album.id}
                                                 albumTitle={album.title}
                                                 photoCount={album._count.photos}
                                             />
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-
-
-            </div>
-        </div >
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        );
+                    })}
+                </div>
+            )}
+        </div>
     );
 }
-
-export default page

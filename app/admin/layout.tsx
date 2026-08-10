@@ -6,30 +6,17 @@ type AdminLayoutProps = Readonly<{
 }>;
 
 export default async function AdminLayout({ children }: AdminLayoutProps) {
-
     const session = await requireAdmin();
 
     return (
-        <div className="flex min-h-screen bg-neutral-900 text-neutral-100">
-            <AdminSidebar
-                adminEmail={
-                    session.user?.email ?? "CMS Administrator"
-                }
-            />
+        <div className="min-h-screen bg-neutral-900 text-neutral-100 lg:flex">
+            <AdminSidebar adminEmail={session.user?.email ?? "CMS Administrator"} />
 
-            <div className="min-w-0 max-w-6xl mx-auto flex-1">
-                {/**                 
-                  <header className="border rounded-lg mt-3 px-8 py-3 border-neutral-700 bg-neutral-950 ">
-                        <p className="text-sm text-primary tracking-widest uppercase">
-                            Admin panel
-                        </p>
-                 </header>
-                */}
-
-                <main className="py-8">
+            <div className="min-w-0 flex-1">
+                <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
                     {children}
                 </main>
             </div>
         </div>
-    )
+    );
 }

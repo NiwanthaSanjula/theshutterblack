@@ -39,6 +39,8 @@ export type SiteSettingMinAggregateOutputType = {
   logoPublicId: string | null
   heroImageUrl: string | null
   heroImagePublicId: string | null
+  aboutImageUrl: string | null
+  aboutImagePublicId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -58,6 +60,8 @@ export type SiteSettingMaxAggregateOutputType = {
   logoPublicId: string | null
   heroImageUrl: string | null
   heroImagePublicId: string | null
+  aboutImageUrl: string | null
+  aboutImagePublicId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -77,6 +81,8 @@ export type SiteSettingCountAggregateOutputType = {
   logoPublicId: number
   heroImageUrl: number
   heroImagePublicId: number
+  aboutImageUrl: number
+  aboutImagePublicId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -98,6 +104,8 @@ export type SiteSettingMinAggregateInputType = {
   logoPublicId?: true
   heroImageUrl?: true
   heroImagePublicId?: true
+  aboutImageUrl?: true
+  aboutImagePublicId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -117,6 +125,8 @@ export type SiteSettingMaxAggregateInputType = {
   logoPublicId?: true
   heroImageUrl?: true
   heroImagePublicId?: true
+  aboutImageUrl?: true
+  aboutImagePublicId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -136,6 +146,8 @@ export type SiteSettingCountAggregateInputType = {
   logoPublicId?: true
   heroImageUrl?: true
   heroImagePublicId?: true
+  aboutImageUrl?: true
+  aboutImagePublicId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -228,6 +240,8 @@ export type SiteSettingGroupByOutputType = {
   logoPublicId: string | null
   heroImageUrl: string | null
   heroImagePublicId: string | null
+  aboutImageUrl: string | null
+  aboutImagePublicId: string | null
   createdAt: Date
   updatedAt: Date
   _count: SiteSettingCountAggregateOutputType | null
@@ -268,6 +282,8 @@ export type SiteSettingWhereInput = {
   logoPublicId?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
   heroImageUrl?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
   heroImagePublicId?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
+  aboutImageUrl?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
+  aboutImagePublicId?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
   createdAt?: Prisma.DateTimeFilter<"SiteSetting"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SiteSetting"> | Date | string
 }
@@ -287,6 +303,8 @@ export type SiteSettingOrderByWithRelationInput = {
   logoPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   heroImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   heroImagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  aboutImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  aboutImagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -309,6 +327,8 @@ export type SiteSettingWhereUniqueInput = Prisma.AtLeast<{
   logoPublicId?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
   heroImageUrl?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
   heroImagePublicId?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
+  aboutImageUrl?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
+  aboutImagePublicId?: Prisma.StringNullableFilter<"SiteSetting"> | string | null
   createdAt?: Prisma.DateTimeFilter<"SiteSetting"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SiteSetting"> | Date | string
 }, "id">
@@ -328,6 +348,8 @@ export type SiteSettingOrderByWithAggregationInput = {
   logoPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   heroImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   heroImagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  aboutImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  aboutImagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SiteSettingCountOrderByAggregateInput
@@ -353,6 +375,8 @@ export type SiteSettingScalarWhereWithAggregatesInput = {
   logoPublicId?: Prisma.StringNullableWithAggregatesFilter<"SiteSetting"> | string | null
   heroImageUrl?: Prisma.StringNullableWithAggregatesFilter<"SiteSetting"> | string | null
   heroImagePublicId?: Prisma.StringNullableWithAggregatesFilter<"SiteSetting"> | string | null
+  aboutImageUrl?: Prisma.StringNullableWithAggregatesFilter<"SiteSetting"> | string | null
+  aboutImagePublicId?: Prisma.StringNullableWithAggregatesFilter<"SiteSetting"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SiteSetting"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SiteSetting"> | Date | string
 }
@@ -372,6 +396,8 @@ export type SiteSettingCreateInput = {
   logoPublicId?: string | null
   heroImageUrl?: string | null
   heroImagePublicId?: string | null
+  aboutImageUrl?: string | null
+  aboutImagePublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -391,6 +417,8 @@ export type SiteSettingUncheckedCreateInput = {
   logoPublicId?: string | null
   heroImageUrl?: string | null
   heroImagePublicId?: string | null
+  aboutImageUrl?: string | null
+  aboutImagePublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -410,6 +438,8 @@ export type SiteSettingUpdateInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -429,6 +459,8 @@ export type SiteSettingUncheckedUpdateInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -448,6 +480,8 @@ export type SiteSettingCreateManyInput = {
   logoPublicId?: string | null
   heroImageUrl?: string | null
   heroImagePublicId?: string | null
+  aboutImageUrl?: string | null
+  aboutImagePublicId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -467,6 +501,8 @@ export type SiteSettingUpdateManyMutationInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -486,6 +522,8 @@ export type SiteSettingUncheckedUpdateManyInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aboutImagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -505,6 +543,8 @@ export type SiteSettingCountOrderByAggregateInput = {
   logoPublicId?: Prisma.SortOrder
   heroImageUrl?: Prisma.SortOrder
   heroImagePublicId?: Prisma.SortOrder
+  aboutImageUrl?: Prisma.SortOrder
+  aboutImagePublicId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -524,6 +564,8 @@ export type SiteSettingMaxOrderByAggregateInput = {
   logoPublicId?: Prisma.SortOrder
   heroImageUrl?: Prisma.SortOrder
   heroImagePublicId?: Prisma.SortOrder
+  aboutImageUrl?: Prisma.SortOrder
+  aboutImagePublicId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -543,6 +585,8 @@ export type SiteSettingMinOrderByAggregateInput = {
   logoPublicId?: Prisma.SortOrder
   heroImageUrl?: Prisma.SortOrder
   heroImagePublicId?: Prisma.SortOrder
+  aboutImageUrl?: Prisma.SortOrder
+  aboutImagePublicId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -564,6 +608,8 @@ export type SiteSettingSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   logoPublicId?: boolean
   heroImageUrl?: boolean
   heroImagePublicId?: boolean
+  aboutImageUrl?: boolean
+  aboutImagePublicId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["siteSetting"]>
@@ -583,6 +629,8 @@ export type SiteSettingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   logoPublicId?: boolean
   heroImageUrl?: boolean
   heroImagePublicId?: boolean
+  aboutImageUrl?: boolean
+  aboutImagePublicId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["siteSetting"]>
@@ -602,6 +650,8 @@ export type SiteSettingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   logoPublicId?: boolean
   heroImageUrl?: boolean
   heroImagePublicId?: boolean
+  aboutImageUrl?: boolean
+  aboutImagePublicId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["siteSetting"]>
@@ -621,11 +671,13 @@ export type SiteSettingSelectScalar = {
   logoPublicId?: boolean
   heroImageUrl?: boolean
   heroImagePublicId?: boolean
+  aboutImageUrl?: boolean
+  aboutImagePublicId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SiteSettingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessName" | "photographerName" | "biography" | "email" | "phone" | "whatsapp" | "address" | "instagramUrl" | "facebookUrl" | "logoUrl" | "logoPublicId" | "heroImageUrl" | "heroImagePublicId" | "createdAt" | "updatedAt", ExtArgs["result"]["siteSetting"]>
+export type SiteSettingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessName" | "photographerName" | "biography" | "email" | "phone" | "whatsapp" | "address" | "instagramUrl" | "facebookUrl" | "logoUrl" | "logoPublicId" | "heroImageUrl" | "heroImagePublicId" | "aboutImageUrl" | "aboutImagePublicId" | "createdAt" | "updatedAt", ExtArgs["result"]["siteSetting"]>
 
 export type $SiteSettingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SiteSetting"
@@ -645,6 +697,8 @@ export type $SiteSettingPayload<ExtArgs extends runtime.Types.Extensions.Interna
     logoPublicId: string | null
     heroImageUrl: string | null
     heroImagePublicId: string | null
+    aboutImageUrl: string | null
+    aboutImagePublicId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["siteSetting"]>
@@ -1084,6 +1138,8 @@ export interface SiteSettingFieldRefs {
   readonly logoPublicId: Prisma.FieldRef<"SiteSetting", 'String'>
   readonly heroImageUrl: Prisma.FieldRef<"SiteSetting", 'String'>
   readonly heroImagePublicId: Prisma.FieldRef<"SiteSetting", 'String'>
+  readonly aboutImageUrl: Prisma.FieldRef<"SiteSetting", 'String'>
+  readonly aboutImagePublicId: Prisma.FieldRef<"SiteSetting", 'String'>
   readonly createdAt: Prisma.FieldRef<"SiteSetting", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SiteSetting", 'DateTime'>
 }

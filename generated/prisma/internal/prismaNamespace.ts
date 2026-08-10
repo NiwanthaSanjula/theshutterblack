@@ -1054,6 +1054,8 @@ export const SiteSettingScalarFieldEnum = {
   logoPublicId: 'logoPublicId',
   heroImageUrl: 'heroImageUrl',
   heroImagePublicId: 'heroImagePublicId',
+  aboutImageUrl: 'aboutImageUrl',
+  aboutImagePublicId: 'aboutImagePublicId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

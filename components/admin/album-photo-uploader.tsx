@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { useState, useTransition } from "react"
-import { CldUploadWidget } from "next-cloudinary"
-import { saveUploadedPhoto } from "@/actions/photo-action"
+import { saveUploadedPhoto } from "@/actions/photo-action";
+import { useRouter } from "next/navigation";
+import { useRef, useState, useTransition } from "react";
+import { CldUploadWidget } from "next-cloudinary";
 
 type AlbumPhotoUploaderProps = {
     albumId: string;
@@ -16,7 +16,7 @@ type CloudinaryUploadInfo = {
     height?: number;
     format?: string;
     bytes?: number;
-}
+};
 
 export default function AlbumPhotoUploader({
     albumId,
@@ -27,17 +27,29 @@ export default function AlbumPhotoUploader({
     const [savedCount, setSavedCount] = useState(0);
     const [error, setError] = useState<string | null>(null);
 
+    // Keep track of Cloudinary files that have already been saved.
+    // This prevents accidental duplicate database inserts.
+    const savedPublicIds = useRef(new Set<string>());
+
     function saveCloudinaryResult(
         info: CloudinaryUploadInfo,
     ) {
         if (!info.public_id || !info.secure_url) {
             setError(
-                "Cloudinary did not return the required image information"
+                "Cloudinary did not return the required image information.",
             );
             return;
         }
 
         const publicId = info.public_id;
+
+        // Prevent duplicate save attempts for the same Cloudinary image.
+        if (savedPublicIds.current.has(publicId)) {
+            return;
+        }
+
+        savedPublicIds.current.add(publicId);
+
         const secureUrl = info.secure_url;
 
         setError(null);
@@ -54,21 +66,43 @@ export default function AlbumPhotoUploader({
             });
 
             if (!result.success) {
+                // Allow retry if the database save failed.
+                savedPublicIds.current.delete(publicId);
+
                 setError(
-                    result.message ?? "The image could not be saved."
+                    result.message ??
+                    "The image could not be saved.",
                 );
+
                 return;
             }
 
-            setSavedCount((currentCount) => {
-                return currentCount + 1;
-            });
-            router.refresh();
+            setSavedCount((currentCount) => currentCount + 1);
         });
     }
 
+    function handleUploadOpen() {
+        setError(null);
+        setSavedCount(0);
+        savedPublicIds.current.clear();
+    }
+
+    function handleUploadClose() {
+        /*
+         * Cloudinary fires onSuccess separately for every image.
+         *
+         * We intentionally DO NOT call router.refresh()
+         * after every upload.
+         *
+         * Instead, refresh the page once after the uploader closes.
+         */
+        if (savedCount > 0) {
+            router.refresh();
+        }
+    }
+
     return (
-        <section className="rounded-lg border border-neutral-700 shadow-lg shadow-black/50 bg-neutral-800 p-6">
+        <section className="rounded-lg border border-neutral-700 bg-neutral-800 p-6 shadow-lg shadow-black/50">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 className="text-lg font-semibold">
@@ -107,17 +141,21 @@ export default function AlbumPhotoUploader({
                         showCompletedButton: true,
                         showUploadMoreButton: true,
                     }}
+                    onOpen={handleUploadOpen}
                     onSuccess={(result) => {
-                        if (!result.info || typeof result.info === "string") {
+                        if (
+                            !result.info ||
+                            typeof result.info === "string"
+                        ) {
                             setError(
-                                "Cloudinary retured an invalid upload result."
+                                "Cloudinary returned an invalid upload result.",
                             );
 
                             return;
                         }
 
                         saveCloudinaryResult(
-                            result.info as CloudinaryUploadInfo
+                            result.info as CloudinaryUploadInfo,
                         );
                     }}
                     onError={() => {
@@ -125,24 +163,32 @@ export default function AlbumPhotoUploader({
                             "The Cloudinary upload failed. Please try again.",
                         );
                     }}
-
+                    onClose={handleUploadClose}
                 >
                     {({ open, isLoading }) => (
                         <button
                             type="button"
                             onClick={() => open()}
                             disabled={isLoading || isSaving}
-                            className="rounded-md bg-primary-hover px-5 py-3 text-sm font-medium text-white transition hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
+                            className="
+                                rounded-md
+                                bg-primary-hover
+                                px-5 py-3
+                                text-sm font-medium
+                                text-white
+                                transition
+                                hover:bg-primary
+                                disabled:cursor-not-allowed
+                                disabled:opacity-60
+                            "
                         >
                             {isLoading
                                 ? "Loading uploader..."
                                 : isSaving
-                                    ? "Saving photo..."
-                                    : "Upload"
-                            }
+                                    ? "Saving photos..."
+                                    : "Upload"}
                         </button>
                     )}
-
                 </CldUploadWidget>
             </div>
 
@@ -170,8 +216,6 @@ export default function AlbumPhotoUploader({
                 RAW camera files. The current limit is 20 MB per
                 image and 50 images per upload batch.
             </p>
-
-
         </section>
-    )
+    );
 }

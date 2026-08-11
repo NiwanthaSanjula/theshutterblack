@@ -10,7 +10,7 @@ type AdminSidebarProps = {
 };
 
 const adminNavigation = [
-    { label: "Dashboard", href: "/admin" },
+    //{ label: "Dashboard", href: "/admin" },
     { label: "Albums", href: "/admin/albums" },
     { label: "Packages", href: "/admin/packages" },
     { label: "Testimonials", href: "/admin/testimonials" },
@@ -31,7 +31,7 @@ const AdminSidebar = ({ adminEmail }: AdminSidebarProps) => {
         <>
             {/* Mobile top bar — hidden on lg+, where the sidebar is always visible */}
             <header className="flex items-center justify-between border-b border-neutral-800 bg-neutral-950 px-5 py-4 lg:hidden">
-                <Link href="/admin" className="block">
+                <Link href="/admin/albums" className="block">
                     <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">
                         Photography CMS
                     </p>
@@ -104,9 +104,9 @@ const AdminSidebar = ({ adminEmail }: AdminSidebarProps) => {
                                 <li key={item.href}>
                                     <Link
                                         href={item.href}
-                                        className={`block rounded-md px-4 py-2 text-sm transition-all ${isActive
-                                                ? "border-l-3 border-primary bg-primary/25 text-primary-light"
-                                                : "text-neutral-400 hover:bg-white/10 hover:text-white"
+                                        className={`block rounded-md px-4 py-2 text-sm font-bold transition-all font-cinzel ${isActive
+                                            ? "border-l-3 border-primary bg-primary/25 text-primary-light"
+                                            : "text-neutral-400 hover:bg-white/10 hover:text-white"
                                             }`}
                                     >
                                         {item.label}

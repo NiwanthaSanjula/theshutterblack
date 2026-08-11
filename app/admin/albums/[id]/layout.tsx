@@ -1,3 +1,5 @@
+// admin/albums/[id]/layout.tsx
+
 import AlbumWorkspaceTabs from "@/components/admin/album-workspace-tabs";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";

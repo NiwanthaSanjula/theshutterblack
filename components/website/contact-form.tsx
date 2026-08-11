@@ -87,12 +87,12 @@ export default function ContactForm() {
                         placeholder="Your full name"
                         className="
                             mt-2 w-full rounded-lg border
-                            border-neutral-300 bg-neutral-800 px-4 py-3
-                            text-sm text-neutral-900 outline-none
+                            border-neutral-700 bg-neutral-900 px-4 py-3
+                            text-sm text-white outline-none
                             transition
-                            placeholder:text-neutral-400
-                            focus:border-neutral-900
-                            focus:ring-1 focus:ring-neutral-900
+                            placeholder:text-neutral-500
+                            focus:border-primary
+                            focus:ring-1 focus:ring-primary
                         "
                     />
                 </div>
@@ -114,12 +114,12 @@ export default function ContactForm() {
                         placeholder="you@example.com"
                         className="
                             mt-2 w-full rounded-lg border
-                            border-neutral-300 bg-neutral-800 px-4 py-3
-                            text-sm text-neutral-900 outline-none
+                            border-neutral-700 bg-neutral-900 px-4 py-3
+                            text-sm text-white outline-none
                             transition
-                            placeholder:text-neutral-400
-                            focus:border-neutral-900
-                            focus:ring-1 focus:ring-neutral-900
+                            placeholder:text-neutral-500
+                            focus:border-primary
+                            focus:ring-1 focus:ring-primary
                         "
                     />
                 </div>
@@ -142,12 +142,12 @@ export default function ContactForm() {
                         placeholder="+94 7X XXX XXXX"
                         className="
                             mt-2 w-full rounded-lg border
-                            border-neutral-300 bg-neutral-800 px-4 py-3
-                            text-sm text-neutral-900 outline-none
+                            border-neutral-700 bg-neutral-900 px-4 py-3
+                            text-sm text-white outline-none
                             transition
-                            placeholder:text-neutral-400
-                            focus:border-neutral-900
-                            focus:ring-1 focus:ring-neutral-900
+                            placeholder:text-neutral-500
+                            focus:border-primary
+                            focus:ring-1 focus:ring-primary
                         "
                     />
                 </div>
@@ -165,11 +165,11 @@ export default function ContactForm() {
                         name="eventType"
                         className="
                             mt-2 w-full rounded-lg border
-                            border-neutral-300 bg-neutral-800px-4 py-3
-                            text-sm text-neutral-400 bg-neutral-800 outline-none
+                            border-neutral-700 bg-neutral-900 px-4 py-3
+                            text-sm text-white outline-none
                             transition
-                            focus:border-neutral-900
-                            focus:ring-1 focus:ring-neutral-900
+                            focus:border-primary
+                            focus:ring-1 focus:ring-primary
                         "
                         defaultValue=""
                     >
@@ -224,12 +224,12 @@ export default function ContactForm() {
                         placeholder="Event location"
                         className="
                             mt-2 w-full rounded-lg border
-                            border-neutral-300 bg-neutral-800 px-4 py-3
-                            text-sm text-neutral-900 outline-none
+                            border-neutral-700 bg-neutral-900 px-4 py-3
+                            text-sm text-white outline-none
                             transition
-                            placeholder:text-neutral-400
-                            focus:border-neutral-900
-                            focus:ring-1 focus:ring-neutral-900
+                            placeholder:text-neutral-500
+                            focus:border-primary
+                            focus:ring-1 focus:ring-primary
                         "
                     />
                 </div>
@@ -252,12 +252,12 @@ export default function ContactForm() {
                     placeholder="Tell us about your event, photography needs, preferred date, or anything else you would like us to know..."
                     className="
                         mt-2 w-full resize-none rounded-lg border
-                        border-neutral-300 bg-neutral-800 px-4 py-3
-                        text-sm leading-7 text-neutral-400 outline-none
+                        border-neutral-700 bg-neutral-900 px-4 py-3
+                        text-sm leading-7 text-white outline-none
                         transition
-                        placeholder:text-neutral-400
-                        focus:border-neutral-900
-                        focus:ring-1 focus:ring-neutral-900
+                        placeholder:text-neutral-500
+                        focus:border-primary
+                        focus:ring-1 focus:ring-primary
                     "
                 />
             </div>

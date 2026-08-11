@@ -1,3 +1,5 @@
+// admin/albums/[id]/photos/page.tsx
+
 import AlbumPhotoUploader from "@/components/admin/album-photo-uploader";
 import DeletePhotoButton from "@/components/admin/delete-photo-button";
 import SetAlbumCoverButton from "@/components/admin/set-album-cover-button";

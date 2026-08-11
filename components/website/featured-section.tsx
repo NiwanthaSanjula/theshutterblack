@@ -52,7 +52,9 @@ export default function FeaturedAlbums({
     const [activeIndex, setActiveIndex] =
         useState(0);
 
-    activeIndexRef.current = activeIndex;
+    useEffect(() => {
+        activeIndexRef.current = activeIndex;
+    }, [activeIndex]);
 
     /*
      * Desktop-only pinned horizontal scrolling.

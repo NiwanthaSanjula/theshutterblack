@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import LogoutButton from "@/components/admin/logout-button";
@@ -21,11 +21,13 @@ const adminNavigation = [
 const AdminSidebar = ({ adminEmail }: AdminSidebarProps) => {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+    const [prevPathname, setPrevPathname] = useState(pathname);
 
-    // Close the mobile drawer automatically whenever the route changes
-    useEffect(() => {
+    // Close the mobile drawer automatically whenever the route changes during render
+    if (pathname !== prevPathname) {
+        setPrevPathname(pathname);
         setIsOpen(false);
-    }, [pathname]);
+    }
 
     return (
         <>
@@ -35,7 +37,7 @@ const AdminSidebar = ({ adminEmail }: AdminSidebarProps) => {
                     <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">
                         Photography CMS
                     </p>
-                    <h2 className="mt-1 text-base font-semibold text-white">
+                    <h2 className="mt-1 text-base font-semibold text-white font-cinzel">
                         The Shutter Black
                     </h2>
                 </Link>

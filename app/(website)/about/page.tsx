@@ -694,7 +694,7 @@ const page = async () => {
                             text-primary
                         "
                     >
-                        Let's create something meaningful
+                        Let&apos;s create something meaningful
                     </p>
 
                     <h2

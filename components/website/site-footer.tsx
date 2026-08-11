@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function SiteFooter() {
     const currentYear = new Date().getFullYear();
 
@@ -67,14 +69,14 @@ export default function SiteFooter() {
                                 lg:text-7xl
                             "
                         >
-                            Let's create something
+                            Let&apos;s create something
                             <span className="block text-white/45">
                                 timeless together.
                             </span>
                         </h2>
 
                         <div className="mt-8">
-                            <a
+                            <Link
                                 href="/contact"
                                 className="
                                     group inline-flex
@@ -121,7 +123,7 @@ export default function SiteFooter() {
                                 >
                                     →
                                 </span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -178,7 +180,7 @@ export default function SiteFooter() {
                         </p>
 
                         <nav className="mt-5 flex flex-col gap-3">
-                            <a
+                            <Link
                                 href="/"
                                 className="
                                     text-sm text-white/55
@@ -186,9 +188,9 @@ export default function SiteFooter() {
                                 "
                             >
                                 Home
-                            </a>
+                            </Link>
 
-                            <a
+                            <Link
                                 href="/albums"
                                 className="
                                     text-sm text-white/55
@@ -196,9 +198,9 @@ export default function SiteFooter() {
                                 "
                             >
                                 Albums
-                            </a>
+                            </Link>
 
-                            <a
+                            <Link
                                 href="/about"
                                 className="
                                     text-sm text-white/55
@@ -206,9 +208,9 @@ export default function SiteFooter() {
                                 "
                             >
                                 About
-                            </a>
+                            </Link>
 
-                            <a
+                            <Link
                                 href="/contact"
                                 className="
                                     text-sm text-white/55
@@ -216,7 +218,7 @@ export default function SiteFooter() {
                                 "
                             >
                                 Contact
-                            </a>
+                            </Link>
                         </nav>
                     </div>
 
@@ -268,7 +270,7 @@ export default function SiteFooter() {
                         </p>
 
                         <div className="mt-5 flex flex-col gap-3">
-                            <a
+                            <Link
                                 href="/contact"
                                 className="
                                     text-sm text-white/55
@@ -276,7 +278,7 @@ export default function SiteFooter() {
                                 "
                             >
                                 Get in touch
-                            </a>
+                            </Link>
 
                             <a
                                 href="#"

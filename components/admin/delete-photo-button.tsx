@@ -82,7 +82,7 @@ export default function DeletePhotoButton({
                         aria-modal="true"
                         aria-labelledby={`delete-photo-title-${photoId}`}
                         aria-describedby={`delete-photo-description-${photoId}`}
-                        className="w-full max-w-md rounded-xl border border-neutral-700 bg-neutral-900 p-6 text-left shadow-2xl"
+                        className="w-full max-w-md rounded-xl border border-l-3 border-l-red-500 border-neutral-700/70 bg-neutral-900/70 backdrop-blur-xs p-6 text-left shadow-2xl"
                     >
                         <h2
                             id={`delete-photo-title-${photoId}`}

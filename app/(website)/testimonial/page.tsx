@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 
 export default function TestimonialPage() {
     const [rating, setRating] = useState(0);
@@ -126,7 +127,7 @@ export default function TestimonialPage() {
                             Black website.
                         </p>
 
-                        <a
+                        <Link
                             href="/"
                             className="
                                 mt-9 inline-flex
@@ -140,7 +141,7 @@ export default function TestimonialPage() {
                             "
                         >
                             Back to home
-                        </a>
+                        </Link>
                     </div>
                 </section>
             </main>

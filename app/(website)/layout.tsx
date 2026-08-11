@@ -1,4 +1,3 @@
-import SiteFooter from "@/components/website/site-footer";
 import SiteHeader from "@/components/website/site-header";
 
 type WebsitelayoutProps = Readonly<{

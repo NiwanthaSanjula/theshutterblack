@@ -88,7 +88,7 @@ export default function HeroSlider() {
         useRef<HTMLDivElement>(null);
 
     const [activeIndex, setActiveIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(true);
+    const [isPlaying] = useState(true);
     const activeSlide = heroSlides[activeIndex];
 
     /**

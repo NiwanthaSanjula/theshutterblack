@@ -369,12 +369,12 @@ export async function updateAlbum(
 
     revalidatePath("/admin");
     revalidatePath("/admin/albums");
-    revalidatePath(`/admin/albums/${albumId}/edit`);
+    revalidatePath(`/admin/albums/${albumId}`);
     revalidatePath("/");
     revalidatePath("/albums");
     revalidatePath(`/albums/${slug}`);
 
-    redirect(`/admin/albums/${albumId}/edit`);
+    redirect(`/admin/albums/${albumId}`);
 }
 
 // --- Save or replace album featured image ---

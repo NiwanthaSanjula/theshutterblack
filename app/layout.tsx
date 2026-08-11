@@ -24,6 +24,8 @@ const robotoCondensed = Roboto_Condensed({
 const eduvicHand = Edu_VIC_WA_NT_Hand({
   variable: "--font-eduvic-hand",
   subsets: ["latin"],
+  adjustFontFallback: false,
+  fallback: ["Arial", "sans-serif"],
 });
 
 export const metadata: Metadata = {

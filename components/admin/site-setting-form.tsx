@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 
 import {
     updateSiteSettings,
@@ -71,13 +71,15 @@ export default function SiteSettingForm({ initialValues }: SiteSettingFormProps)
 
     const [state, action, isPending] = useActionState(updateSiteSettings, initialState);
     const [isEditing, setIsEditing] = useState(false);
+    const [prevState, setPrevState] = useState(state);
 
-    // Drop back into view mode automatically once a save succeeds.
-    useEffect(() => {
+    // Drop back into view mode automatically once a save succeeds during render
+    if (state !== prevState) {
+        setPrevState(state);
         if (state.success) {
             setIsEditing(false);
         }
-    }, [state]);
+    }
 
     const values = state.values ?? initialValues;
 

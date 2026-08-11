@@ -5,7 +5,7 @@ import AlbumForm from "@/components/admin/album-form"
 
 const page = () => {
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
             <div className="mb-8">
                 <Link
                     href="/admin/albums"

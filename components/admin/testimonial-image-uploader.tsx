@@ -160,6 +160,7 @@ export default function TestimonialImageUploader({
                 <CldUploadWidget
                     signatureEndpoint="/api/cloudinary/signature"
                     options={{
+                        uploadPreset: "ml_default",
                         sources: ["local"],
                         multiple: false,
                         maxFiles: 1,

@@ -118,12 +118,13 @@ export default function AlbumPhotoUploader({
                 <CldUploadWidget
                     signatureEndpoint="/api/cloudinary/signature"
                     options={{
+                        uploadPreset: "ml_default",
                         sources: ["local"],
                         multiple: true,
                         maxFiles: 50,
                         maxFileSize: 20_000_000,
-                        maxImageWidth: 2400,
-                        maxImageHeight: 2400,
+                        maxImageWidth: 2000,
+                        maxImageHeight: 2000,
                         clientAllowedFormats: [
                             "jpg",
                             "jpeg",

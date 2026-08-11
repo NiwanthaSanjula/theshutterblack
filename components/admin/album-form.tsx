@@ -77,9 +77,7 @@ export default function AlbumForm({
                 </div>
             )}
 
-            <div className="grid grid-cols-[2fr_1fr] gap-5">
-
-
+            <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-5">
 
                 <section className="border border-neutral-700 border-l-2 border-l-primary bg-neutral-800 rounded-lg shadow-lg shadow-black/75 p-6">
                     <div>
@@ -270,12 +268,12 @@ export default function AlbumForm({
                         </label>
                     </div>
 
-                    <div className="mt-6 flex items-center justify-end gap-4">
+                    <div className="mt-6 flex items-center justify-between gap-2">
                         <Link
                             href="/admin/albums"
                             className="rounded-md border border-neutral-600 bg-neutral-900 px-5 py-3 text-sm font-medium transition hover:bg-neutral-800"
                         >
-                            Cancel
+                            Back to albums
                         </Link>
                         <button
                             type="submit"
@@ -284,8 +282,8 @@ export default function AlbumForm({
                         >
                             {isPending
                                 ? isEditing
-                                    ? "Saving changes..."
-                                    : "Creating album..."
+                                    ? "Saving..."
+                                    : "Creating..."
                                 : isEditing
                                     ? "Save changes"
                                     : "Create album"

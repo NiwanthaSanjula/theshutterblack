@@ -17,8 +17,6 @@ type InquiryActionControlsProps = {
 
 type ActionName =
     | "read"
-    | "replied"
-    | "archive"
     | "new"
     | "delete";
 
@@ -96,35 +94,6 @@ export default function InquiryActionControls({
                     </button>
                 )}
 
-                {(status === "NEW" || status === "READ" || status === "ARCHIVED") && (
-                    <button
-                        type="button"
-                        disabled={isPending}
-                        onClick={() =>
-                            runAction("replied", () =>
-                                updateInquiryStatus(inquiryId, "REPLIED"),
-                            )
-                        }
-                        className="rounded-md bg-violet-600 px-3.5 py-1.5 text-xs font-medium text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        {activeAction === "replied" ? "Marking..." : "Mark as replied"}
-                    </button>
-                )}
-
-                {status !== "ARCHIVED" && (
-                    <button
-                        type="button"
-                        disabled={isPending}
-                        onClick={() =>
-                            runAction("archive", () =>
-                                updateInquiryStatus(inquiryId, "ARCHIVED"),
-                            )
-                        }
-                        className="rounded-md border border-neutral-600 px-3.5 py-1.5 text-xs font-medium text-neutral-300 transition hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        {activeAction === "archive" ? "Archiving..." : "Archive"}
-                    </button>
-                )}
 
                 {status !== "NEW" && (
                     <button

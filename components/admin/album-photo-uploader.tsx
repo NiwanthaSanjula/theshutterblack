@@ -1,6 +1,6 @@
 "use client";
 
-import { saveUploadedPhoto } from "@/actions/photo-action";
+import { saveUploadedPhotosBatch } from "@/actions/photo-action";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 import { CldUploadWidget } from "next-cloudinary";
@@ -27,9 +27,8 @@ export default function AlbumPhotoUploader({
     const [savedCount, setSavedCount] = useState(0);
     const [error, setError] = useState<string | null>(null);
 
-    // Keep track of Cloudinary files that have already been saved.
-    // This prevents accidental duplicate database inserts.
-    const savedPublicIds = useRef(new Set<string>());
+    // Keep track of Cloudinary files uploaded in the current session
+    const pendingPhotos = useRef<CloudinaryUploadInfo[]>([]);
 
     function saveCloudinaryResult(
         info: CloudinaryUploadInfo,
@@ -41,64 +40,57 @@ export default function AlbumPhotoUploader({
             return;
         }
 
-        const publicId = info.public_id;
+        // Prevent duplicate results in the batch
+        const isDuplicate = pendingPhotos.current.some(
+            (p) => p.public_id === info.public_id
+        );
 
-        // Prevent duplicate save attempts for the same Cloudinary image.
-        if (savedPublicIds.current.has(publicId)) {
+        if (isDuplicate) {
             return;
         }
 
-        savedPublicIds.current.add(publicId);
-
-        const secureUrl = info.secure_url;
-
-        setError(null);
-
-        startSavingTransition(async () => {
-            const result = await saveUploadedPhoto({
-                albumId,
-                publicId,
-                secureUrl,
-                width: info.width ?? null,
-                height: info.height ?? null,
-                format: info.format ?? null,
-                fileSize: info.bytes ?? null,
-            });
-
-            if (!result.success) {
-                // Allow retry if the database save failed.
-                savedPublicIds.current.delete(publicId);
-
-                setError(
-                    result.message ??
-                    "The image could not be saved.",
-                );
-
-                return;
-            }
-
-            setSavedCount((currentCount) => currentCount + 1);
-        });
+        pendingPhotos.current.push(info);
     }
 
     function handleUploadOpen() {
         setError(null);
         setSavedCount(0);
-        savedPublicIds.current.clear();
+        pendingPhotos.current = [];
     }
 
     function handleUploadClose() {
-        /*
-         * Cloudinary fires onSuccess separately for every image.
-         *
-         * We intentionally DO NOT call router.refresh()
-         * after every upload.
-         *
-         * Instead, refresh the page once after the uploader closes.
-         */
-        if (savedCount > 0) {
-            router.refresh();
+        if (pendingPhotos.current.length === 0) {
+            return;
         }
+
+        setError(null);
+
+        startSavingTransition(async () => {
+            const result = await saveUploadedPhotosBatch({
+                albumId,
+                photos: pendingPhotos.current.map((info) => ({
+                    publicId: info.public_id!,
+                    secureUrl: info.secure_url!,
+                    width: info.width ?? null,
+                    height: info.height ?? null,
+                    format: info.format ?? null,
+                    fileSize: info.bytes ?? null,
+                })),
+            });
+
+            if (!result.success) {
+                setError(
+                    result.message ??
+                    "The images could not be saved.",
+                );
+
+                return;
+            }
+
+            setSavedCount(pendingPhotos.current.length);
+            pendingPhotos.current = [];
+            router.refresh();
+        });
     }
 
     return (

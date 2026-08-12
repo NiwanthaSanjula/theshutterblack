@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 
 type ServiceItem = {
     title: string;
@@ -11,13 +14,13 @@ const services: ServiceItem[] = [
         title: "Wedding Photography",
         description:
             "Natural and timeless wedding photography that preserves the emotions, details and meaningful moments of your special day.",
-        image: "/service-wedding.jpg",
+        image: "/service-wedding-background.jpg",
     },
     {
         title: "Portrait Photography",
         description:
             "Relaxed portrait sessions created with beautiful light, natural direction and genuine expression.",
-        image: "/service-portrait-bg.jpg",
+        image: "/service-portrait-background.jpg",
     },
     {
         title: "Event Photography",
@@ -71,6 +74,105 @@ function getDesktopLayout(index: number) {
 }
 
 export default function Services() {
+    const cardsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const container = cardsRef.current;
+
+        if (!container) {
+            return;
+        }
+
+        const cards = Array.from(
+            container.querySelectorAll<HTMLElement>("[data-parallax-card]"),
+        );
+
+        let frameId: number | null = null;
+
+        const updateParallax = () => {
+            frameId = null;
+
+            const viewportHeight = window.innerHeight;
+
+            cards.forEach((card) => {
+                const image =
+                    card.querySelector<HTMLElement>(
+                        "[data-parallax-image]",
+                    );
+
+                if (!image) {
+                    return;
+                }
+
+                const rect = card.getBoundingClientRect();
+
+                /*
+                 * progress:
+                 * 0   = card enters from the bottom
+                 * 0.5 = card is around the middle of viewport
+                 * 1   = card leaves through the top
+                 */
+                const progress =
+                    (viewportHeight - rect.top) /
+                    (viewportHeight + rect.height);
+
+                const clampedProgress = Math.max(
+                    0,
+                    Math.min(1, progress),
+                );
+
+                /*
+                 * Move the image upward by up to 70px.
+                 *
+                 * The card itself does not move.
+                 */
+                const translateY =
+                    -80 * clampedProgress + 5;
+
+                image.style.transform = `translate3d(0, ${translateY}px, 0) scale(1.12)`;
+            });
+        };
+
+        const requestUpdate = () => {
+            if (frameId !== null) {
+                return;
+            }
+
+            frameId = window.requestAnimationFrame(
+                updateParallax,
+            );
+        };
+
+        updateParallax();
+
+        window.addEventListener(
+            "scroll",
+            requestUpdate,
+            { passive: true },
+        );
+
+        window.addEventListener(
+            "resize",
+            requestUpdate,
+        );
+
+        return () => {
+            if (frameId !== null) {
+                window.cancelAnimationFrame(frameId);
+            }
+
+            window.removeEventListener(
+                "scroll",
+                requestUpdate,
+            );
+
+            window.removeEventListener(
+                "resize",
+                requestUpdate,
+            );
+        };
+    }, []);
+
     return (
         <section
             className="
@@ -79,9 +181,9 @@ export default function Services() {
                 sm:px-6 sm:py-24
                 lg:px-8
                 xl:min-h-screen xl:h-auto xl:px-10 xl:pb-16 xl:pt-28
-                max-w-7xl mx-auto"
+                max-w-7xl mx-auto
+            "
         >
-
             <div
                 aria-hidden="true"
                 className="
@@ -106,7 +208,6 @@ export default function Services() {
                         xl:justify-between
                     "
                 >
-                    {/* Overlapping title on the right */}
                     <div className="xl:text-right">
                         <p
                             aria-hidden="true"
@@ -135,7 +236,6 @@ export default function Services() {
                         </h2>
                     </div>
 
-                    {/* Description on the left */}
                     <p
                         className="
                             max-w-xl text-sm leading-7 text-white/55
@@ -147,16 +247,11 @@ export default function Services() {
                         storytelling created for meaningful
                         people, moments and celebrations.
                     </p>
-
-
                 </header>
 
-                {/* 
-                    Mobile: one column
-                    Tablet: two columns
-                    Desktop: 12-column, two-row bento grid
-                */}
+                {/* Services grid */}
                 <div
+                    ref={cardsRef}
                     className="
                         mt-12 grid gap-3
                         sm:grid-cols-2 sm:gap-4
@@ -175,6 +270,7 @@ export default function Services() {
                         return (
                             <article
                                 key={service.title}
+                                data-parallax-card
                                 className={`
                                     group relative flex min-h-68
                                     overflow-hidden rounded-xl
@@ -190,18 +286,52 @@ export default function Services() {
                                     ${getDesktopLayout(index)}
                                 `}
                             >
-
-                                <div className="absolute inset-0">
-                                    <Image
-                                        src={service.image}
-                                        alt=""
-                                        fill
-                                        sizes="(max-width: 640px) 100vw, (max-width: 1279px) 50vw, 33vw"
-                                        className="object-cover transition duration-700 group-hover:scale-105"
-                                    />
+                                {/* Parallax background image */}
+                                <div
+                                    aria-hidden="true"
+                                    className="absolute inset-0 overflow-hidden"
+                                >
+                                    <div
+                                        data-parallax-image
+                                        className="
+                                            absolute
+                                            -inset-y-10
+                                            inset-x-0
+                                            will-change-transform
+                                            transition-transform
+                                            duration-100
+                                            ease-out
+                                        "
+                                    >
+                                        <Image
+                                            src={service.image}
+                                            alt=""
+                                            fill
+                                            sizes="
+                                                (max-width: 640px) 100vw,
+                                                (max-width: 1279px) 50vw,
+                                                33vw
+                                            "
+                                            className="
+                                                object-cover
+                                                transition-transform
+                                                duration-700
+                                                group-hover:scale-105
+                                            "
+                                        />
+                                    </div>
                                 </div>
 
-                                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/55 to-black/20" />
+                                {/* Dark overlay */}
+                                <div
+                                    className="
+                                        absolute inset-0
+                                        bg-linear-to-t
+                                        from-black/90
+                                        via-black/55
+                                        to-black/20
+                                    "
+                                />
 
                                 {/* Card glow */}
                                 <div
@@ -232,8 +362,8 @@ export default function Services() {
                                     )}
                                 </span>
 
+                                {/* Content */}
                                 <div className="relative z-10 flex flex-1 flex-col justify-end transition-transform duration-300 group-hover:-translate-y-1">
-                                    {/* Text */}
                                     <div>
                                         <h3
                                             className={`

@@ -172,6 +172,178 @@ export async function saveUploadedPhoto(
     }
 }
 
+export type SaveUploadedPhotosBatchInput = {
+    albumId: string;
+    photos: Array<{
+        publicId: string;
+        secureUrl: string;
+        width: number | null;
+        height: number | null;
+        format: string | null;
+        fileSize: number | null;
+    }>;
+};
+
+export type PhotosBatchActionResult = {
+    success: boolean;
+    message?: string;
+    savedCount?: number;
+};
+
+export async function saveUploadedPhotosBatch(
+    input: SaveUploadedPhotosBatchInput,
+): Promise<PhotosBatchActionResult> {
+    const adminSession = await getAdminSession();
+
+    if (!adminSession) {
+        return {
+            success: false,
+            message:
+                "Your administrator session is missing or has expired. Sign in again.",
+        };
+    }
+
+    if (!input.albumId || !input.photos || input.photos.length === 0) {
+        return {
+            success: false,
+            message: "Album ID and uploaded photo details are required.",
+        };
+    }
+
+    // Validate that all secureUrls are from Cloudinary and formats are allowed
+    for (const photo of input.photos) {
+        if (!photo.secureUrl.startsWith("https://res.cloudinary.com/")) {
+            return {
+                success: false,
+                message: "One or more image URLs are invalid.",
+            };
+        }
+
+        if (
+            photo.format &&
+            !allowedFormats.has(photo.format.toLocaleLowerCase())
+        ) {
+            return {
+                success: false,
+                message: `The image format "${photo.format}" is not supported.`,
+            };
+        }
+    }
+
+    const album = await prisma.album.findUnique({
+        where: {
+            id: input.albumId,
+        },
+        select: {
+            id: true,
+            title: true,
+            slug: true,
+        },
+    });
+
+    if (!album) {
+        return {
+            success: false,
+            message: "The selected album could not be found.",
+        };
+    }
+
+    // Filter out photos that have already been saved to the database (check unique publicid)
+    const publicIds = input.photos.map((p) => p.publicId);
+    const existingPhotos = await prisma.photo.findMany({
+        where: {
+            publicid: { in: publicIds },
+        },
+        select: {
+            publicid: true,
+        },
+    });
+
+    const existingPublicIds = new Set(existingPhotos.map((p) => p.publicid));
+    const photosToInsert = input.photos.filter(
+        (p) => !existingPublicIds.has(p.publicId),
+    );
+
+    if (photosToInsert.length === 0) {
+        return {
+            success: true,
+            savedCount: 0,
+        };
+    }
+
+    // Get the current displayOrder boundary
+    const lastPhoto = await prisma.photo.findFirst({
+        where: {
+            albumId: album.id,
+        },
+        orderBy: {
+            displayOrder: "desc",
+        },
+        select: {
+            displayOrder: true,
+        },
+    });
+
+    let displayOrderStart = (lastPhoto?.displayOrder ?? -1) + 1;
+
+    try {
+        await prisma.$transaction(async (tx) => {
+            for (const p of photosToInsert) {
+                await tx.photo.create({
+                    data: {
+                        albumId: album.id,
+                        publicid: p.publicId,
+                        secureUrl: p.secureUrl,
+                        width: validatePositiveInteger(p.width) ? p.width : null,
+                        height: validatePositiveInteger(p.height) ? p.height : null,
+                        fileSize: validatePositiveInteger(p.fileSize) ? p.fileSize : null,
+                        format: p.format?.toLocaleLowerCase() ?? null,
+                        displayOrder: displayOrderStart++,
+                        isVisible: true,
+                        isCover: false,
+                        altText: `${album.title} photograph`,
+                    },
+                });
+            }
+        });
+
+        revalidatePath("/admin");
+        revalidatePath("/admin/albums");
+        revalidatePath(`/admin/albums/${album.id}/photos`);
+        revalidatePath("/albums");
+        revalidatePath(`/albums/${album.slug}`);
+
+        return {
+            success: true,
+            savedCount: photosToInsert.length,
+        };
+    } catch (error) {
+        console.error("Failed to save uploaded photos batch:", error);
+
+        // Attempt to clean up the newly uploaded files from Cloudinary
+        for (const p of photosToInsert) {
+            try {
+                await cloudinary.uploader.destroy(p.publicId, {
+                    resource_type: "image",
+                    invalidate: true,
+                });
+            } catch (cleanupError) {
+                console.error(
+                    "Failed to clean up Cloudinary photo after database failure:",
+                    p.publicId,
+                    cleanupError,
+                );
+            }
+        }
+
+        return {
+            success: false,
+            message:
+                "The database save operation failed. The uploaded photos were cleaned up from Cloudinary.",
+        };
+    }
+}
+
 export async function deletePhoto(
     photoId: string,
 ): Promise<PhotoActionResult> {

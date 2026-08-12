@@ -7,6 +7,7 @@ import LogoutButton from "@/components/admin/logout-button";
 
 type AdminSidebarProps = {
     adminEmail: string;
+    unreadMessagesCount?: number;
 };
 
 const adminNavigation = [
@@ -18,7 +19,7 @@ const adminNavigation = [
     { label: "Settings", href: "/admin/settings" },
 ];
 
-const AdminSidebar = ({ adminEmail }: AdminSidebarProps) => {
+const AdminSidebar = ({ adminEmail, unreadMessagesCount }: AdminSidebarProps) => {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const [prevPathname, setPrevPathname] = useState(pathname);
@@ -48,9 +49,15 @@ const AdminSidebar = ({ adminEmail }: AdminSidebarProps) => {
                     aria-label="Open menu"
                     aria-expanded={isOpen}
                     aria-controls="admin-sidebar"
-                    className="flex h-10 w-10 items-center justify-center rounded-md border border-neutral-700 text-neutral-300 transition hover:text-white"
+                    className="relative flex h-10 w-10 items-center justify-center rounded-md border border-neutral-700 text-neutral-300 transition hover:text-white"
                 >
                     ☰
+                    {unreadMessagesCount !== undefined && unreadMessagesCount > 0 ? (
+                        <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+                            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary"></span>
+                        </span>
+                    ) : null}
                 </button>
             </header>
 
@@ -97,25 +104,30 @@ const AdminSidebar = ({ adminEmail }: AdminSidebarProps) => {
                 <nav className="mt-10 lg:mt-12" aria-label="Admin navigation">
                     <ul className="space-y-2">
                         {adminNavigation.map((item) => {
-                            const isActive =
-                                item.href === "/admin"
-                                    ? pathname === item.href
-                                    : pathname.startsWith(item.href);
+                             const isActive =
+                                 item.href === "/admin"
+                                     ? pathname === item.href
+                                     : pathname.startsWith(item.href);
 
-                            return (
-                                <li key={item.href}>
-                                    <Link
-                                        href={item.href}
-                                        className={`block rounded-md px-4 py-2 text-sm font-bold transition-all font-cinzel ${isActive
-                                            ? "border-l-3 border-primary bg-primary/25 text-primary-light"
-                                            : "text-neutral-400 hover:bg-white/10 hover:text-white"
-                                            }`}
-                                    >
-                                        {item.label}
-                                    </Link>
-                                </li>
-                            );
-                        })}
+                             return (
+                                 <li key={item.href}>
+                                     <Link
+                                         href={item.href}
+                                         className={`flex items-center justify-between rounded-md px-4 py-2 text-sm font-bold transition-all font-cinzel ${isActive
+                                             ? "border-l-3 border-primary bg-primary/25 text-primary-light"
+                                             : "text-neutral-400 hover:bg-white/10 hover:text-white"
+                                             }`}
+                                     >
+                                         <span>{item.label}</span>
+                                          {item.href === "/admin/messages" && unreadMessagesCount !== undefined && unreadMessagesCount > 0 ? (
+                                             <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-neutral-950 ring-2 ring-neutral-950">
+                                                 {unreadMessagesCount}
+                                             </span>
+                                         ) : null}
+                                     </Link>
+                                 </li>
+                             );
+                         })}
                     </ul>
                 </nav>
 

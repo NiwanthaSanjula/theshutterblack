@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import InquiryActionControls from "@/components/admin/inquiry-action-controls";
 
 const dateFormatter = new Intl.DateTimeFormat("en-LK", {
     year: "numeric",
@@ -146,11 +147,15 @@ export default async function AdminMessagesPage() {
                                 <blockquote className="mt-5 border-l-2 border-primary pl-4 text-sm leading-7 text-white/70">
                                     <p className="whitespace-pre-wrap">{inquiry.message}</p>
                                 </blockquote>
-                            </div>
 
-                            {/* TODO: status controls (mark as Read / Replied / Archived).
-        Needs a server action such as updateInquiryStatus(inquiryId, status)
-        that checks getAdminSession(), matching your other admin actions. */}
+                                <div className="mt-6 border-t border-white/10 pt-5">
+                                    <InquiryActionControls
+                                        inquiryId={inquiry.id}
+                                        inquiryName={inquiry.name}
+                                        status={inquiry.status}
+                                    />
+                                </div>
+                            </div>
 
                             <div className="flex items-center justify-between border-t border-white/10 px-5 py-3 sm:px-6">
                                 <p className="text-xs text-white/30">

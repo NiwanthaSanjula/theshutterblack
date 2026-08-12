@@ -20,12 +20,20 @@ export default function ContactForm() {
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        const form = event.currentTarget;
+        const formData = new FormData(form);
+        const honeypot = String(formData.get("honeypot") || "");
+
+        // If honeypot is filled out, it's a bot! Intercept and mock success silently.
+        if (honeypot) {
+            setSuccess(true);
+            form.reset();
+            return;
+        }
+
         setIsSubmitting(true);
         setSuccess(false);
         setError("");
-
-        const form = event.currentTarget;
-        const formData = new FormData(form);
 
         const data = {
             name: String(formData.get("name") || "").trim(),
@@ -35,6 +43,7 @@ export default function ContactForm() {
             eventDate: String(formData.get("eventDate") || "").trim(),
             location: String(formData.get("location") || "").trim(),
             message: String(formData.get("message") || "").trim(),
+            honeypot,
         };
 
         try {
@@ -69,6 +78,16 @@ export default function ContactForm() {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Honeypot field - hidden from humans but filled by bots */}
+            <div className="hidden" aria-hidden="true">
+                <input
+                    type="text"
+                    name="honeypot"
+                    tabIndex={-1}
+                    autoComplete="off"
+                />
+            </div>
+
             <div className="grid gap-6 sm:grid-cols-2">
                 <div>
                     <label

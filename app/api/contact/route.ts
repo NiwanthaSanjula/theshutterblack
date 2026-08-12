@@ -43,6 +43,19 @@ export async function POST(request: Request) {
                 ? body.message.trim()
                 : "";
 
+        const honeypot =
+            typeof body.honeypot === "string"
+                ? body.honeypot
+                : "";
+
+        // If honeypot is filled out, it's a spam bot! Discard silently and mock success.
+        if (honeypot) {
+            return NextResponse.json(
+                { success: true },
+                { status: 201 },
+            );
+        }
+
         if (!name || !email || !message) {
             return NextResponse.json(
                 {

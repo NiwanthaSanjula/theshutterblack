@@ -24,6 +24,18 @@ export default function TestimonialPage() {
         const formData =
             new FormData(form);
 
+        const website = String(
+            formData.get("website") || "",
+        );
+
+        // If honeypot is filled out, it's a bot! Intercept and mock success.
+        if (website) {
+            setSubmitted(true);
+            form.reset();
+            setRating(0);
+            return;
+        }
+
         if (rating === 0) {
             setError(
                 "Please select a rating.",
@@ -61,6 +73,7 @@ export default function TestimonialPage() {
                                 formData.get(
                                     "consentToPublish",
                                 ) === "on",
+                            website,
                         }),
                     },
                 );
@@ -188,11 +201,19 @@ export default function TestimonialPage() {
                         </p>
                     </div>
 
-                    {/* Form */}
                     <form
                         onSubmit={handleSubmit}
                         className="mt-12 space-y-6"
                     >
+                        {/* Honeypot field - hidden from humans but filled by bots */}
+                        <div className="hidden" aria-hidden="true">
+                            <input
+                                type="text"
+                                name="website"
+                                tabIndex={-1}
+                                autoComplete="off"
+                            />
+                        </div>
 
                         {/* Name */}
                         <div>

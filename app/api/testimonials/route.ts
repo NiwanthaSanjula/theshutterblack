@@ -28,6 +28,22 @@ export async function POST(request: Request) {
         const consentToPublish =
             body.consentToPublish === true;
 
+        const website =
+            typeof body.website === "string"
+                ? body.website.trim()
+                : "";
+
+        // If honeypot is filled out, it's a spam bot! Discard silently and mock success.
+        if (website) {
+            return NextResponse.json(
+                {
+                    success: true,
+                    id: "mock-id-for-spam-bot",
+                },
+                { status: 201 },
+            );
+        }
+
         // Basic validation
         if (!name) {
             return NextResponse.json(
